@@ -52,8 +52,7 @@ real-time-analytics/
 * [ ] Implement Kafka consumer logic in processing-service
 * [ ] Store processed results in PostgreSQL
 * [ ] Add REST APIs in analytics-service for querying analytics
-* [ ] (Optional) Visualization layer (Grafana/Prometheus or simple dashboards)
-
+* 
 ---
 
 ## 📖 Learning Goals
