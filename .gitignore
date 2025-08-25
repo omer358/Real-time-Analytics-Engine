@@ -1,0 +1,62 @@
+# Java related files
+*.class
+*.war
+*.jar
+*.ear
+
+# Directories
+target/
+out/
+
+# Maven
+.mvn/
+!.mvn/wrapper/maven-wrapper.jar
+.mvnd/
+settings.xml.backup
+
+# Spring Boot specific files
+logs/
+*.log
+spring.log
+!src/main/resources/application*.properties
+!src/main/resources/application*.yaml
+!src/main/resources/application*.yml
+*application-*.properties
+*application-*.yaml
+*application-*.yml
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea_modules/
+*.class
+.gradle/
+
+# Logs
+logs/
+*.log
+hs_err_pid*.log
+
+# Lombok generated files
+*.lombok.config
+
+# Eclipse
+.project
+.classpath
+.settings/
+.apt_generated/
+.factorypath
+
+# VS Code
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
+*.swp
+
+# Generated files
+*.pyc
+.gmx!
