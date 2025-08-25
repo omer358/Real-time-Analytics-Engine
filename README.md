@@ -2,20 +2,24 @@
 
 ## 📌 Overview
 
-This project is a **real-time analytics backend** for e-commerce platforms, built with **Spring Boot (Java)**, **Kafka**, and **PostgreSQL**. It ingests order and user activity events, processes them in real-time, and provides aggregated analytics via REST APIs.
+This project is a **real-time analytics backend** for e-commerce platforms, built with **Spring Boot (Java)**, **Kafka**, and **PostgreSQL**.
 
-The system is designed to mimic **production-grade event-driven architectures** used in modern e-commerce companies like Amazon, Shopify, and Flipkart.
+The system is designed to:
+
+1. Ingest **e-commerce events** (like purchases, product views, cart updates).
+2. Stream them into **Kafka** for decoupled processing.
+3. Consume and process events in **real-time**.
+4. Store insights for analytics and reporting.
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Current Architecture
 
-* **Event Producers** → Simulate e-commerce events (orders, user activity, cart updates).
-* **Kafka** → Streams events for real-time processing.
-* **Analytics Processor Service** → Consumes Kafka topics, processes events, and stores aggregated results.
-* **Analytics Query Service** → Exposes REST APIs for fetching analytics data.
-* **PostgreSQL** → Stores aggregated analytics.
-* **Prometheus + Grafana (optional)** → For metrics and visualization.
+* **Ingestion Service** → REST API endpoints to accept e-commerce events and publish them into Kafka.
+* **Processing Service** → Kafka consumer service that listens to events (skeleton ready, processing logic to be added).
+* **Analytics Service** → will provide REST APIs for analytics queries (planned).
+* **Kafka** → acts as the event backbone.
+* **PostgreSQL** → will be used later for storing processed/aggregated results.
 
 ---
 
@@ -23,24 +27,13 @@ The system is designed to mimic **production-grade event-driven architectures** 
 
 ```bash
 real-time-analytics/
-│── analytics-common/         # Shared models, DTOs, and utils
-│── event-producer/           # Service that simulates e-commerce events
-│── analytics-processor/      # Kafka consumer that processes events
-│── analytics-query/          # REST APIs for querying aggregated data
-│── docker-compose.yml        # Infra (Kafka, PostgreSQL, ZooKeeper)
+│── ingestion-service/     # Handles incoming events (e.g., PurchaseEvent) and publishes to Kafka
+│── processing-service/    # Consumes Kafka events (processing logic coming soon)
+│── analytics-service/     # Placeholder for exposing analytics data via APIs
+│── api-requests/          # HTTP request samples for testing ingestion
+│── pom.xml                # Parent Maven configuration
 │── README.md
 ```
-
----
-
-## 🔑 Key Features (Planned)
-
-✅ Simulate real-time **order and user activity events**<br>
-✅ Stream events through **Kafka**<br>
-✅ Process events with **Spring Boot + Kafka Consumer**<br>
-✅ Store aggregated results in **PostgreSQL**<br>
-✅ Expose **REST APIs** for analytics (sales trends, top products, user activity)<br>
-✅ Scalable microservices architecture<br>
 
 ---
 
@@ -52,45 +45,22 @@ real-time-analytics/
 * Docker & Docker Compose
 * Maven
 
-### Run Infrastructure
-
-```bash
-docker-compose up -d
-```
-
-### Run Services
-
-```bash
-cd event-producer && mvn spring-boot:run
-cd analytics-processor && mvn spring-boot:run
-cd analytics-query && mvn spring-boot:run
-```
-
----
-
-## 📡 Example APIs (To Be Implemented)
-
-* `GET /analytics/sales/daily` → Daily sales trend
-* `GET /analytics/sales/top-products` → Top-selling products
-* `GET /analytics/users/active` → Active users in real-time
-
----
-
 ## 🎯 Roadmap
 
-* [ ] Implement event producer with simulated data
-* [ ] Process order events in analytics-processor
-* [ ] Store results in PostgreSQL
-* [ ] Expose analytics APIs in analytics-query
-* [ ] Add Prometheus/Grafana dashboards
+* [x] Setup ingestion service with **PurchaseEvent endpoint**
+* [ ] Add more event types (product views, add-to-cart)
+* [ ] Implement Kafka consumer logic in processing-service
+* [ ] Store processed results in PostgreSQL
+* [ ] Add REST APIs in analytics-service for querying analytics
+* [ ] (Optional) Visualization layer (Grafana/Prometheus or simple dashboards)
 
 ---
 
 ## 📖 Learning Goals
 
-* Hands-on experience with **Kafka event streaming**
-* Designing **microservices architecture** with Spring Boot
-* Real-world use case: **e-commerce analytics**
-* Building **resume-worthy project** to showcase event-driven systems
+* Practice with **Kafka event streaming**
+* Build a **modular microservices architecture** with Spring Boot
+* Learn how **real-time e-commerce analytics pipelines** are designed
+* Create a **resume-ready project** to showcase event-driven design
 
 ---
