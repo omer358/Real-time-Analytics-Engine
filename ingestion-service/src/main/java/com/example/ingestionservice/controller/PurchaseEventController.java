@@ -1,7 +1,7 @@
 package com.example.ingestionservice.controller;
 
 import com.example.ingestionservice.model.PurchaseEvent;
-import com.example.ingestionservice.service.EventPublisherService;
+import com.example.ingestionservice.service.PurchaseEventProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("${api.prefix}/events")
 @RequiredArgsConstructor
 public class PurchaseEventController {
-    private final EventPublisherService eventPublisherService;
+    private final PurchaseEventProducer purchaseEventProducer;
 
     @PostMapping("/purchase")
     public ResponseEntity<String> sendEvent(@RequestBody PurchaseEvent payload) {
-        eventPublisherService.publishEvent(payload.toString());
+        purchaseEventProducer.send(payload);
         return ResponseEntity.ok("Event sent");
     }
 }

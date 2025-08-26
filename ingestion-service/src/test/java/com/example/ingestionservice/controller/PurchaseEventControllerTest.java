@@ -1,7 +1,7 @@
 package com.example.ingestionservice.controller;
 
 import com.example.ingestionservice.model.PurchaseEvent;
-import com.example.ingestionservice.service.EventPublisherService;
+import com.example.ingestionservice.service.PurchaseEventProducer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ class PurchaseEventControllerTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private EventPublisherService eventPublisherService;
+    private PurchaseEventProducer purchaseEventProducer;
 
     @Autowired
     private ObjectMapper objectMapper;
