@@ -41,8 +41,7 @@ real-time-analytics/
 
 ### Prerequisites
 
-* Java 21
-* Docker & Docker Compose
+* Java 17
 * Maven
 
 ## 🎯 Roadmap
