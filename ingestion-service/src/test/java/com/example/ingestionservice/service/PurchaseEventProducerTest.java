@@ -1,8 +1,8 @@
 package com.example.ingestionservice.service;
 
 import com.example.ingestionservice.model.PurchaseEvent;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 
@@ -13,6 +13,7 @@ import static org.mockito.Mockito.*;
 class PurchaseEventProducerTest {
 
     @Test
+    @DisplayName("Should call KafkaTemplate to send event")
     void send_shouldCallKafkaTemplate() {
         // Arrange
         KafkaTemplate<String, PurchaseEvent> kafkaTemplate = mock(KafkaTemplate.class);

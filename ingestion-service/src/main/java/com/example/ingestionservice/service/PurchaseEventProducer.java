@@ -26,7 +26,6 @@ public class PurchaseEventProducer {
         future.whenComplete((result, ex) -> {
             if (ex != null) {
                 log.error("Error sending event: {}", event, ex);
-                ex.printStackTrace();
             } else {
                 log.info("Event sent: {}", event);
             }

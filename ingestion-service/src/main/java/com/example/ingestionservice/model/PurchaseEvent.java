@@ -1,5 +1,8 @@
 package com.example.ingestionservice.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,9 +13,18 @@ import java.time.Instant;
 @Setter
 @Builder
 public class PurchaseEvent {
+    @NotBlank(message = "Order ID is required")
     private String orderId;
+
+    @NotBlank(message = "Product ID is required")
     private String productId;
+
+    @NotBlank(message = "Customer ID is required")
     private String customerId;
+
+    @Positive(message = "Amount must be greater than zero")
     private double amount;
+
+    @NotNull(message = "Timestamp is required")
     private Instant timestamp;
 }
