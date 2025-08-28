@@ -3,8 +3,9 @@ POST {{baseUrl}}/purchase
 Content-Type: application/json
 
 {
+  "orderId": "123",
   "productId": "PROD-456",
-  "customerId": "",
+  "customerId": "343",
   "amount": 99.99,
   "timestamp": "2025-08-25T10:00:00Z"
 }
