@@ -1,28 +1,44 @@
-# docker-compose.yml
-version: '3.8'
 services:
   kafka:
     image: bitnami/kafka:latest
     container_name: kafka
     ports:
       - "9092:9092"
+      - "29092:29092"    # external access
     environment:
       - KAFKA_ENABLE_KRAFT=yes
-      - KAFKA_CFG_PROCESS_ROLES=broker,controller
       - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:29092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:29092
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
       - ALLOW_PLAINTEXT_LISTENER=yes
+    volumes:
+      - kafka_data:/bitnami/kafka
+    networks:
+      - internal
+
+  ingestion-service:
+    build:
+      context: ./ingestion-service
+    container_name: ingestion-service
+    ports:
+      - "8001:8001"
+    environment:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - SPRING_KAFKA_PRODUCER_ACKS=all
       - SPRING_KAFKA_PRODUCER_RETRIES=3
       - SPRING_KAFKA_PRODUCER_LINGER_MS=5
       - SPRING_KAFKA_PRODUCER_DELIVERY_TIMEOUT_MS=30000
       - SPRING_KAFKA_PRODUCER_REQUEST_TIMEOUT_MS=20000
-    volumes:
-      - kafka_data:/bitnami/kafka
+    depends_on:
+      - kafka
+    networks:
+      - internal
+
 volumes:
   kafka_data:
 
