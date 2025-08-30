@@ -24,7 +24,7 @@ WORKDIR /app
 COPY --from=builder /app/target/processing-service-0.0.1-SNAPSHOT.jar ./processing-service.jar
 
 # Expose the port your app runs on
-EXPOSE 8001
+EXPOSE 8002
 
 # Run the Spring Boot application
 ENTRYPOINT ["java", "-jar", "processing-service.jar"]
