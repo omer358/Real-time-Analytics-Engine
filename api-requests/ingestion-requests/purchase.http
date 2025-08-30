@@ -3,7 +3,7 @@ POST {{baseUrl}}/purchase
 Content-Type: application/json
 
 {
-  "orderId": "123",
+  "orderId": "1234",
   "productId": "PROD-456",
   "customerId": "343",
   "amount": 99.99,

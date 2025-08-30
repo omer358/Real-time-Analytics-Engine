@@ -4,14 +4,14 @@
 
 The **Real-Time E-Commerce Analytics Engine** is a backend system that demonstrates how modern e-commerce platforms (like Amazon or Shopify) track and analyze events in **real-time**.
 
-It is built with **Spring Boot (Java)**, **Apache Kafka**, and later will integrate **PostgreSQL** for persistence.
+It is built with **Spring Boot (Java)** and **Apache Kafka**, with **PostgreSQL integration planned** for persistence.
 
 The system is designed to:
 
 1. **Ingest e-commerce events** — such as purchases, product views, and cart updates — through REST APIs.
 2. **Stream events into Kafka** for scalable and decoupled processing.
-3. **Consume and process events in real-time** to extract insights (e.g., sales trends, active users, popular products).
-4. **Store aggregated results** in PostgreSQL for querying and reporting.
+3. **Consume events in real-time** to log or eventually process analytics.
+4. **Store aggregated results** in PostgreSQL (planned for future phases).
 
 This project follows an **event-driven architecture**, which enables **scalability, loose coupling, and near real-time analytics**, similar to what large-scale distributed systems use in production.
 
@@ -20,10 +20,10 @@ This project follows an **event-driven architecture**, which enables **scalabili
 ## 🏗️ Current Architecture
 
 * **Ingestion Service** → REST API endpoints to accept e-commerce events and publish them into Kafka.
-* **Processing Service** → Kafka consumer service that listens to events (skeleton ready, processing logic to be added).
-* **Analytics Service** → will provide REST APIs for analytics queries (planned).
+* **Processing Service** → Kafka consumer service that listens to events, validates them, and logs incoming events.
+* **Analytics Service** → planned REST API service for analytics queries.
 * **Kafka** → acts as the event backbone.
-* **PostgreSQL** → will be used later for storing processed/aggregated results.
+* **PostgreSQL** → planned for storing processed/aggregated results.
 
 ---
 
@@ -31,9 +31,9 @@ This project follows an **event-driven architecture**, which enables **scalabili
 
 ```bash
 real-time-analytics/
-│── ingestion-service/     # Handles incoming events (e.g., PurchaseEvent) and publishes to Kafka
-│── processing-service/    # Consumes Kafka events (processing logic coming soon)
-│── analytics-service/     # Placeholder for exposing analytics data via APIs
+│── ingestion-service/     # Handles incoming events and publishes to Kafka
+│── processing-service/    # Consumes Kafka events and logs them (processing logic planned)
+│── analytics-service/     # Placeholder for future analytics REST APIs
 │── api-requests/          # HTTP request samples for testing ingestion
 │── pom.xml                # Parent Maven configuration
 │── README.md
@@ -65,7 +65,7 @@ real-time-analytics/
 
 ### Environment Variables
 
-Create a `.env` file in the project root with the following variables:
+Create a `.env` file in the project root:
 
 ```dotenv
 # Kafka bootstrap servers
@@ -77,10 +77,17 @@ SPRING_KAFKA_PRODUCER_RETRIES=3
 SPRING_KAFKA_PRODUCER_LINGER_MS=5
 SPRING_KAFKA_PRODUCER_DELIVERY_TIMEOUT_MS=30000
 SPRING_KAFKA_PRODUCER_REQUEST_TIMEOUT_MS=20000
+
+# Kafka consumer settings
+SPRING_KAFKA_CONSUMER_GROUP_ID=processing-group
+SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET=earliest
+
+# Server ports
+INGESTION_SERVICE_PORT=8001
+PROCESSING_SERVICE_PORT=8002
 ```
 
-These variables are automatically injected into the Spring Boot services by Docker Compose.
-`application.properties` contains fallback defaults so the services can run outside Docker as well.
+These variables are injected automatically by Docker Compose. `application.properties` contains fallback defaults to run services locally.
 
 ---
 
@@ -93,10 +100,15 @@ docker-compose up -d
 This will start:
 
 * Kafka broker (internal port 9092, external mapped port 29092)
-* Zookeeper is not required (Kafka Kraft mode)
-* You can check logs via `docker-compose logs -f kafka`
+* No Zookeeper (Kafka Kraft mode)
 
-> Note: When running Spring Boot locally, use `localhost:29092` as the Kafka bootstrap server.
+Check logs via:
+
+```bash
+docker-compose logs -f kafka
+```
+
+> When running Spring Boot locally, use `localhost:29092` as the Kafka bootstrap server.
 
 ---
 
@@ -107,28 +119,23 @@ This will start:
 ```bash
 docker-compose up -d ingestion-service
 docker-compose up -d processing-service
-# analytics-service will be added later
 ```
 
-Services will automatically use the `.env` variables.
+#### Option 2: Locally (IntelliJ / Maven)
 
-#### Option 2: Running Locally (e.g., IntelliJ or Maven)
-
-1. Make sure Kafka is running in Docker (`docker-compose up kafka`).
-2. Run the Spring Boot service in IntelliJ or via Maven:
+1. Ensure Kafka is running (`docker-compose up kafka`).
+2. Run Spring Boot services:
 
 ```bash
 cd ingestion-service
 mvn spring-boot:run
 ```
 
-3. The app will use the fallback defaults in `application.properties` or env vars from `.env`.
-
 ---
 
 ### Testing Ingestion Endpoints
 
-Send a purchase event to ingestion service:
+Send a purchase event:
 
 ```bash
 curl -X POST http://localhost:8001/api/v1/purchase \
@@ -142,24 +149,24 @@ curl -X POST http://localhost:8001/api/v1/purchase \
 }'
 ```
 
+Processing service logs incoming events to verify consumption.
+
 ---
 
-## 🎯 Roadmap
+## 🎯 Current Features
 
-### Phase 1: Event Ingestion ✅
+* **Ingestion service** with PurchaseEvent endpoint
+* **Processing service**: consumes, validates, and logs events from Kafka
+* Dockerized services with environment variable configuration
 
-* Setup ingestion service with **PurchaseEvent endpoint**
-* Configure Kafka in Docker with external and internal listeners
+---
 
-### Phase 2: Event Processing 🔄
+## 🛠️ Future Enhancements
 
-* Implement Kafka consumer logic in processing-service
-* Process additional events: product views, add-to-cart
-
-### Phase 3: Analytics APIs ⏳
-
-* Store processed results in PostgreSQL
-* Add REST APIs in analytics-service for querying analytics
+* Implement real **analytics processing** in processing service
+* Persist processed metrics into **PostgreSQL**
+* Add REST API endpoints in analytics-service for querying analytics
+* Implement dead-letter queues for invalid events
 
 ---
 
@@ -167,7 +174,7 @@ curl -X POST http://localhost:8001/api/v1/purchase \
 
 * Practice with **Kafka event streaming**
 * Build a **modular microservices architecture** with Spring Boot
-* Learn how **real-time e-commerce analytics pipelines** are designed
-* Create a **resume-ready project** to showcase event-driven design
+* Learn **real-time e-commerce analytics pipelines**
+* Create a **resume-ready project** demonstrating event-driven design
 
 ---

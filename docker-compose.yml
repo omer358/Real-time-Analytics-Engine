@@ -1,7 +1,7 @@
 services:
   kafka:
     image: bitnami/kafka:latest
-    container_name: kafka
+    container_name: rta-kafka
     ports:
       - "9092:9092"
       - "29092:29092"
@@ -24,7 +24,7 @@ services:
   ingestion-service:
     build:
       context: ./ingestion-service
-    container_name: ingestion-service
+    container_name: rta-ingestion-service
     ports:
       - "8001:8001"
     environment:
@@ -34,6 +34,22 @@ services:
       - SPRING_KAFKA_PRODUCER_LINGER_MS=5
       - SPRING_KAFKA_PRODUCER_DELIVERY_TIMEOUT_MS=30000
       - SPRING_KAFKA_PRODUCER_REQUEST_TIMEOUT_MS=20000
+    depends_on:
+      - kafka
+    networks:
+      - internal
+
+  processing-service:
+    build:
+      context: ./processing-service
+    container_name: rta-processing-service
+    ports:
+      - "8002:8002"
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=${SPRING_KAFKA_BOOTSTRAP_SERVERS}
+      - SPRING_KAFKA_CONSUMER_GROUP_ID=${SPRING_KAFKA_CONSUMER_GROUP_ID}
+      - SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET=${SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET}
+      - SERVER_PORT=${SERVER_PORT}
     depends_on:
       - kafka
     networks:
