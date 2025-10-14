@@ -1,27 +1,26 @@
 package com.example.processingservice.consumer;
 
-import com.example.processingservice.model.PurchaseEvent;
-import com.example.processingservice.validation.PurchaseEventValidator;
+import com.example.processingservice.model.OrderPlacedEvent;
+import com.example.processingservice.validation.OrderPlacedEventValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class PurchaseEventConsumer {
-    private final PurchaseEventValidator validator;
-    public PurchaseEventConsumer(PurchaseEventValidator validator) {
+public class OrderPlacedEventConsumer {
+    private final OrderPlacedEventValidator validator;
+    public OrderPlacedEventConsumer(OrderPlacedEventValidator validator) {
         this.validator = validator;
     }
 
-    @KafkaListener(topics = "purchase-events", groupId = "${spring.kafka.consumer.group-id}")
-    public void consume(PurchaseEvent event) {
+    @KafkaListener(topics = "order-placed-events", groupId = "${spring.kafka.consumer.group-id}")
+    public void consume(OrderPlacedEvent event) {
         boolean valid = validator.validate(event);
         if (valid) {
             log.info("Event received: {}", event);
         } else {
             log.warn("Invalid event received: {}", event);
         }
-
     }
 }

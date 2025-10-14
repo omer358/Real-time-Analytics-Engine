@@ -1,6 +1,6 @@
 package com.example.processingservice.config;
 
-import com.example.processingservice.model.PurchaseEvent;
+import com.example.processingservice.model.OrderPlacedEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,9 +29,10 @@ public class KafkaConsumerConfig {
     private String autoOffsetReset;
 
     @Bean
-    public ConsumerFactory<String, PurchaseEvent> consumerFactory() {
-        JsonDeserializer<PurchaseEvent> deserializer = new JsonDeserializer<>(PurchaseEvent.class);
-        deserializer.addTrustedPackages("*"); // or restrict to your package for security
+    public ConsumerFactory<String, OrderPlacedEvent> consumerFactory() {
+        JsonDeserializer<OrderPlacedEvent> deserializer = new JsonDeserializer<>(OrderPlacedEvent.class);
+        deserializer.addTrustedPackages("*");
+        deserializer.ignoreTypeHeaders();
         deserializer.setUseTypeMapperForKey(true);
 
         Map<String, Object> props = new HashMap<>();
@@ -41,17 +42,16 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, deserializer);
 
-        // optional: for reliability in production
-        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false); // manual ack
-        props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 100);     // batch size
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+        props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 100);
         props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 15000);
 
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), deserializer);
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, PurchaseEvent> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, PurchaseEvent> factory =
+    public ConcurrentKafkaListenerContainerFactory<String, OrderPlacedEvent> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, OrderPlacedEvent> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
 
