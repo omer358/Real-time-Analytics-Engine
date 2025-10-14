@@ -59,9 +59,25 @@ services:
       - "8002:8002"
     environment:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=${SPRING_KAFKA_BOOTSTRAP_SERVERS}
-      - SPRING_KAFKA_CONSUMER_GROUP_ID=${SPRING_KAFKA_CONSUMER_GROUP_ID}
+      - SPRING_KAFKA_CONSUMER_GROUP_ID=${SPRING_KAFKA_CONSUMER_PROCESSING_GROUP_ID}
       - SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET=${SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET}
-      - SERVER_PORT=${SERVER_PORT}
+      - SERVER_PORT=${PROCESSING_SERVER_PORT}
+    depends_on:
+      - kafka
+    networks:
+      - internal
+
+  analytics-service:
+    build:
+      context: ./analytics-service
+    container_name: rta-analytics-service
+    ports:
+      - "8003:8003"
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=${SPRING_KAFKA_BOOTSTRAP_SERVERS}
+      - SPRING_KAFKA_CONSUMER_GROUP_ID=${SPRING_KAFKA_CONSUMER_ANALYTICS_GROUP_ID}
+      - SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET=${SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET}
+      - SERVER_PORT=${ANALYTICS_SERVER_PORT}
     depends_on:
       - kafka
     networks:
