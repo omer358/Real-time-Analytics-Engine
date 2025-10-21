@@ -1,0 +1,31 @@
+{
+  "schemaName": "order_placed_rt",
+  "dimensionFieldSpecs": [
+    {
+      "name": "orderId",
+      "dataType": "STRING"
+    },
+    {
+      "name": "customerId",
+      "dataType": "STRING"
+    },
+    {
+      "name": "products",
+      "dataType": "STRING"
+    }
+  ],
+  "metricFieldSpecs": [
+    {
+      "name": "totalAmount",
+      "dataType": "DOUBLE"
+    }
+  ],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "timestamp",
+      "dataType": "TIMESTAMP",
+      "format": "iso8601",
+      "granularity": "1:MILLISECONDS"
+    }
+  ]
+}

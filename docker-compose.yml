@@ -33,6 +33,39 @@ services:
     networks:
       - internal
 
+  pinot:
+    image: apachepinot/pinot:latest
+    container_name: rta-pinot
+    command: "QuickStart -type stream"
+    ports:
+      - "9000:9000"   # Web UI
+      - "8099:8099"   # Broker port (optional)
+    environment:
+      JAVA_OPTS: "-Xms512m -Xmx1g"
+    depends_on:
+      - kafka
+      - zookeeper
+    networks:
+      - internal
+
+  pinot-add-orders-table:
+    image: apachepinot/pinot:latest
+    container_name: pinot-add-orders-table
+    volumes:
+      - ./pinot/config:/config
+    command: >
+      AddTable
+      -schemaFile /config/orders/order_placed_schema.json
+      -tableConfigFile /config/orders/order_placed_rt_table.json
+      -controllerHost rta-pinot
+      -exec
+    restart: "no"
+    depends_on:
+      - pinot
+    networks:
+      - internal
+
+
   ingestion-service:
     build:
       context: ./ingestion-service

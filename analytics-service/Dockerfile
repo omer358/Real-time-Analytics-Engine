@@ -21,10 +21,13 @@ FROM eclipse-temurin:17-jre-alpine AS runner
 WORKDIR /app
 
 # Copy jar from builder stage
-COPY --from=builder /app/target/analytics-service-0.0.1-SNAPSHOT.jar ./analytics-service.jar
+COPY --from=builder /app/target/*SNAPSHOT.jar ./analytics-service.jar
+
+# Reduce JVM startup overhead
+ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
 
 # Expose the port your app runs on
 EXPOSE 8003
 
 # Run the Spring Boot application
-ENTRYPOINT ["java", "-jar", "analytics-service.jar"]
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar analytics-service.jar"]
