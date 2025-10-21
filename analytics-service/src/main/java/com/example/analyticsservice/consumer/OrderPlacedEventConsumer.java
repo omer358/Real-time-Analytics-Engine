@@ -14,7 +14,7 @@ public class OrderPlacedEventConsumer {
         this.validator = validator;
     }
 
-    @KafkaListener(topics = "order-placed-events", groupId = "${spring.kafka.consumer.group-id}")
+    @KafkaListener(topics = "order-placed-flat-events", groupId = "${spring.kafka.consumer.group-id}")
     public void consume(OrderPlacedEvent event) {
         boolean valid = validator.validate(event);
         if (valid) {

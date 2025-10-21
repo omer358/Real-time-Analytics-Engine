@@ -10,11 +10,23 @@
       "dataType": "STRING"
     },
     {
-      "name": "products",
+      "name": "productId",
+      "dataType": "STRING"
+    },
+    {
+      "name": "key",
       "dataType": "STRING"
     }
   ],
   "metricFieldSpecs": [
+    {
+      "name": "quantity",
+      "dataType": "INT"
+    },
+    {
+      "name": "price",
+      "dataType": "DOUBLE"
+    },
     {
       "name": "totalAmount",
       "dataType": "DOUBLE"
@@ -23,8 +35,8 @@
   "dateTimeFieldSpecs": [
     {
       "name": "timestamp",
-      "dataType": "TIMESTAMP",
-      "format": "iso8601",
+      "dataType": "LONG",
+      "format": "EPOCH",
       "granularity": "1:MILLISECONDS"
     }
   ]
