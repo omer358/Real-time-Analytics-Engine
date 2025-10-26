@@ -1,7 +1,7 @@
 package com.example.ingestionservice.controller;
 
-import com.example.ingestionservice.model.PurchaseEvent;
-import com.example.ingestionservice.service.PurchaseEventProducer;
+import com.example.ingestionservice.model.OrderPlacedEvent;
+import com.example.ingestionservice.service.OrderPlacedEventProducer;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("${api.prefix}/events")
 @RequiredArgsConstructor
-public class PurchaseEventController {
-    private final PurchaseEventProducer purchaseEventProducer;
+public class OrderPlacedController {
+    private final OrderPlacedEventProducer orderPlacedEventProducer;
 
-    @PostMapping("/purchase")
-    public ResponseEntity<String> sendEvent(@RequestBody @Valid PurchaseEvent payload) {
-        purchaseEventProducer.send(payload);
+    @PostMapping("/order-placed")
+    public ResponseEntity<String> sendEvent(@RequestBody @Valid OrderPlacedEvent payload) {
+        orderPlacedEventProducer.send(payload);
         return ResponseEntity.ok("Event sent");
     }
 }

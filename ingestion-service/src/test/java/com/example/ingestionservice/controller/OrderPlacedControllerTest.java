@@ -1,7 +1,8 @@
 package com.example.ingestionservice.controller;
 
-import com.example.ingestionservice.model.PurchaseEvent;
-import com.example.ingestionservice.service.PurchaseEventProducer;
+import com.example.ingestionservice.model.OrderPlacedEvent;
+import com.example.ingestionservice.model.Product;
+import com.example.ingestionservice.service.OrderPlacedEventProducer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -20,14 +22,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(PurchaseEventController.class)
-class PurchaseEventControllerTest {
+@WebMvcTest(OrderPlacedController.class)
+class OrderPlacedControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockitoBean
-    private PurchaseEventProducer purchaseEventProducer;
+    private OrderPlacedEventProducer orderPlacedEventProducer;
 
     @MockBean
     private Clock clock;
@@ -38,16 +40,20 @@ class PurchaseEventControllerTest {
     @Test
     void whenValidInput_thenReturns200() throws Exception {
         Instant fixedTimestamp = Instant.parse("2025-08-25T20:59:55Z");
-
-        PurchaseEvent event = PurchaseEvent.builder()
+        Product product = Product.builder()
+                .productId("12")
+                .quantity(1)
+                .price(99.99)
+                .build();
+        OrderPlacedEvent event = OrderPlacedEvent.builder()
                 .orderId("123")
-                .productId("456")
                 .customerId("789")
-                .amount(99.99)
+                .totalAmount(99.99)
+                .products(List.of(product))
                 .timestamp(fixedTimestamp)
                 .build();
 
-        String response = mockMvc.perform(post("/api/v1/events/purchase")
+        String response = mockMvc.perform(post("/api/v1/events/order-placed")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(event)))
                 .andExpect(status().isOk())
@@ -62,16 +68,21 @@ class PurchaseEventControllerTest {
         Instant fixedTimestamp = Instant.parse("2025-08-25T20:59:55Z");
         when(clock.instant()).thenReturn(fixedTimestamp);
 
+        Product product = Product.builder()
+                .productId("12")
+                .quantity(1)
+                .price(99.99)
+                .build();
         // Build the payload
-        PurchaseEvent event = PurchaseEvent.builder()
-                .productId("456")
+        OrderPlacedEvent event = OrderPlacedEvent.builder()
                 .customerId("789")
-                .amount(99.99)
+                .totalAmount(99.99)
+                .products(List.of(product))
                 .timestamp(Instant.parse("2025-08-26T12:00:00Z"))
                 .build();
 
         // Act & Assert
-        mockMvc.perform(post("/api/v1/events/purchase")
+        mockMvc.perform(post("/api/v1/events/order-placed")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(event)))
                 .andExpect(status().isBadRequest())
@@ -89,16 +100,22 @@ class PurchaseEventControllerTest {
         Instant fixedTimestamp = Instant.parse("2025-08-25T20:59:55Z");
         when(clock.instant()).thenReturn(fixedTimestamp);
 
+        Product product = Product.builder()
+                .quantity(1)
+                .price(99.99)
+                .build();
+
         // Build the payload
-        PurchaseEvent event = PurchaseEvent.builder()
+        OrderPlacedEvent event = OrderPlacedEvent.builder()
                 .orderId("123")
                 .customerId("789")
-                .amount(99.99)
+                .totalAmount(99.99)
+                .products(List.of(product))
                 .timestamp(Instant.parse("2025-08-26T12:00:00Z"))
                 .build();
 
         // Act & Assert
-        mockMvc.perform(post("/api/v1/events/purchase")
+        mockMvc.perform(post("/api/v1/events/order-placed")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(event)))
                 .andExpect(status().isBadRequest())
@@ -116,15 +133,14 @@ class PurchaseEventControllerTest {
         when(clock.instant()).thenReturn(fixedTimestamp);
 
         // Build the payload
-        PurchaseEvent event = PurchaseEvent.builder()
+        OrderPlacedEvent event = OrderPlacedEvent.builder()
                 .orderId("123")
-                .productId("456")
-                .amount(99.99)
+                .totalAmount(99.99)
                 .timestamp(Instant.parse("2025-08-26T12:00:00Z"))
                 .build();
 
         // Act & Assert
-        mockMvc.perform(post("/api/v1/events/purchase")
+        mockMvc.perform(post("/api/v1/events/order-placed")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(event)))
                 .andExpect(status().isBadRequest())
@@ -140,25 +156,30 @@ class PurchaseEventControllerTest {
         // Arrange: Mock the clock to return a fixed timestamp
         Instant fixedTimestamp = Instant.parse("2025-08-25T20:59:55Z");
         when(clock.instant()).thenReturn(fixedTimestamp);
+        Product product = Product.builder()
+                .productId("12")
+                .quantity(1)
+                .price(99.99)
+                .build();
 
         // Build the payload
-        PurchaseEvent event = PurchaseEvent.builder()
+        OrderPlacedEvent event = OrderPlacedEvent.builder()
                 .orderId("123")
-                .productId("456")
                 .customerId("789")
-                .amount(-99.99)
+                .totalAmount(-99.99)
+                .products(List.of(product))
                 .timestamp(Instant.parse("2025-08-26T12:00:00Z"))
                 .build();
 
         // Act & Assert
-        mockMvc.perform(post("/api/v1/events/purchase")
+        mockMvc.perform(post("/api/v1/events/order-placed")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(event)))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json("{\"message\":\"Validation failed\"," +
                         "\"timestamp\":\"2025-08-25T20:59:55Z\"," +
                         "\"status\":400," +
-                        "\"errors\":{\"amount\":\"Amount must be greater than zero\"}}")
+                        "\"errors\":{\"totalAmount\":\"Total amount must be greater than zero\"}}")
                 );
     }
 
@@ -169,15 +190,14 @@ class PurchaseEventControllerTest {
         when(clock.instant()).thenReturn(fixedTimestamp);
 
         // Build the payload
-        PurchaseEvent event = PurchaseEvent.builder()
+        OrderPlacedEvent event = OrderPlacedEvent.builder()
                 .orderId("123")
-                .productId("456")
                 .customerId("789")
-                .amount(99.99)
+                .totalAmount(99.99)
                 .build();
 
         // Act & Assert
-        mockMvc.perform(post("/api/v1/events/purchase")
+        mockMvc.perform(post("/api/v1/events/order-placed")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(event)))
                 .andExpect(status().isBadRequest())

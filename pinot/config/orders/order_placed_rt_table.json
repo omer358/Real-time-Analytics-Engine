@@ -1,0 +1,31 @@
+{
+  "tableName": "order_placed_rt",
+  "tableType": "REALTIME",
+  "segmentsConfig": {
+    "timeColumnName": "timestamp",
+    "schemaName": "order_placed_schema",
+    "replication": "1",
+    "segmentPushType": "APPEND",
+    "segmentGranularity": "DAILY"
+  },
+  "tenants": {
+    "broker": "DefaultTenant",
+    "server": "DefaultTenant"
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP",
+    "streamConfigs": {
+      "streamType": "kafka",
+      "stream.kafka.topic.name": "order-placed-flat-events",
+      "stream.kafka.broker.list": "kafka:9092",
+      "stream.kafka.consumer.type": "lowLevel",
+      "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.stream.kafka.KafkaJSONMessageDecoder",
+      "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",
+      "stream.kafka.auto.offset.reset": "smallest"
+    },
+    "upsertConfig": {
+      "upsertMode": "FULL",
+      "primaryKeyColumns": ["__key"]
+    }
+  }
+}

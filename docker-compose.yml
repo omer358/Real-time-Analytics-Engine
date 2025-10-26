@@ -1,62 +1,134 @@
-services:
-  kafka:
-    image: bitnami/kafka:latest
-    container_name: rta-kafka
-    ports:
-      - "9092:9092"
-      - "29092:29092"
-    environment:
-      - KAFKA_ENABLE_KRAFT=yes
-      - KAFKA_CFG_NODE_ID=1
-      - KAFKA_CFG_PROCESS_ROLES=broker,controller
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:29092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://${KAFKA_ADVERTISED_LISTENER_INTERNAL},EXTERNAL://${KAFKA_ADVERTISED_LISTENER_EXTERNAL}
-      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
-      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
-      - ALLOW_PLAINTEXT_LISTENER=yes
-    volumes:
-      - kafka_data:/bitnami/kafka
-    networks:
-      - internal
+  services:
+    zookeeper:
+      image: zookeeper:latest
+      container_name: rta-zookeeper
+      hostname: zookeeper
+      ports:
+        - "2181:2181"
+      environment:
+        ZOO_MY_ID: 1
+        ZOO_PORT: 2181
+        ZOO_SERVERS: server.1=zookeeper:2888:3888;2181
+      networks:
+        - internal
+    kafka:
+      image: confluentinc/cp-kafka:7.9.0-1-ubi8
+      user: "0:0"
+      container_name: rta-kafka
+      ports:
+        - "29092:29092"
+      environment:
+        KAFKA_BROKER_ID: 1
+        KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+        KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+        KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+        KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+        KAFKA_TOOLS_LOG4J_LOGLEVEL: ERROR
+      depends_on:
+        [ zookeeper ]
+      healthcheck: { test: nc -z localhost 9092, interval: 1s, start_period: 120s }
+      volumes:
+        - kafka_data:/var/lib/kafka/data
+      networks:
+        - internal
 
-  ingestion-service:
-    build:
-      context: ./ingestion-service
-    container_name: rta-ingestion-service
-    ports:
-      - "8001:8001"
-    environment:
-      - SPRING_KAFKA_BOOTSTRAP_SERVERS=${SPRING_KAFKA_BOOTSTRAP_SERVERS}
-      - SPRING_KAFKA_PRODUCER_ACKS=${SPRING_KAFKA_PRODUCER_ACKS}
-      - SPRING_KAFKA_PRODUCER_RETRIES=3
-      - SPRING_KAFKA_PRODUCER_LINGER_MS=5
-      - SPRING_KAFKA_PRODUCER_DELIVERY_TIMEOUT_MS=30000
-      - SPRING_KAFKA_PRODUCER_REQUEST_TIMEOUT_MS=20000
-    depends_on:
-      - kafka
-    networks:
-      - internal
+    pinot:
+      image: apachepinot/pinot:latest
+      container_name: rta-pinot
+      command: "QuickStart -type stream"
+      ports:
+        - "9000:9000"   # Web UI
+        - "8099:8099"   # Broker port (optional)
+        - "8000:8000"   # Add this line
+      environment:
+        JAVA_OPTS: >
+          -Xms512m -Xmx1g
+          -Dpinot.broker.host=rta-pinot
+          -Dpinot.broker.client.queryPort=8000
+      depends_on:
+        - kafka
+        - zookeeper
+      networks:
+        - internal
 
-  processing-service:
-    build:
-      context: ./processing-service
-    container_name: rta-processing-service
-    ports:
-      - "8002:8002"
-    environment:
-      - SPRING_KAFKA_BOOTSTRAP_SERVERS=${SPRING_KAFKA_BOOTSTRAP_SERVERS}
-      - SPRING_KAFKA_CONSUMER_GROUP_ID=${SPRING_KAFKA_CONSUMER_GROUP_ID}
-      - SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET=${SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET}
-      - SERVER_PORT=${SERVER_PORT}
-    depends_on:
-      - kafka
-    networks:
-      - internal
+    pinot-add-orders-table:
+      image: apachepinot/pinot:latest
+      container_name: pinot-add-orders-table
+      volumes:
+        - ./pinot/config:/config
+      command: >
+        AddTable
+        -schemaFile /config/orders/order_placed_schema.json
+        -tableConfigFile /config/orders/order_placed_rt_table.json
+        -controllerHost rta-pinot
+        -exec
+      restart: "no"
+      depends_on:
+        - pinot
+      networks:
+        - internal
 
-volumes:
-  kafka_data:
 
-networks:
-  internal:
+    ingestion-service:
+      build:
+        context: ./ingestion-service
+      container_name: rta-ingestion-service
+      ports:
+        - "8001:8001"
+      environment:
+        - SPRING_KAFKA_BOOTSTRAP_SERVERS=${SPRING_KAFKA_BOOTSTRAP_SERVERS}
+        - SPRING_KAFKA_PRODUCER_ACKS=${SPRING_KAFKA_PRODUCER_ACKS}
+        - SPRING_KAFKA_PRODUCER_RETRIES=3
+        - SPRING_KAFKA_PRODUCER_LINGER_MS=5
+        - SPRING_KAFKA_PRODUCER_DELIVERY_TIMEOUT_MS=30000
+        - SPRING_KAFKA_PRODUCER_REQUEST_TIMEOUT_MS=20000
+        - SERVER_PORT=${INGESTION_SERVER_PORT}
+
+      depends_on:
+        - kafka
+      networks:
+        - internal
+
+    processing-service:
+      build:
+        context: ./processing-service
+      container_name: rta-processing-service
+      ports:
+        - "8002:8002"
+      environment:
+        - SPRING_KAFKA_BOOTSTRAP_SERVERS=${SPRING_KAFKA_BOOTSTRAP_SERVERS}
+        - SPRING_KAFKA_CONSUMER_GROUP_ID=${SPRING_KAFKA_CONSUMER_PROCESSING_GROUP_ID}
+        - SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET=${SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET}
+        - SPRING_KAFKA_PRODUCER_ACKS=${SPRING_KAFKA_PRODUCER_ACKS}
+        - SPRING_KAFKA_PRODUCER_RETRIES=3
+        - SPRING_KAFKA_PRODUCER_LINGER_MS=5
+        - SPRING_KAFKA_PRODUCER_DELIVERY_TIMEOUT_MS=30000
+        - SPRING_KAFKA_PRODUCER_REQUEST_TIMEOUT_MS=20000
+        - SERVER_PORT=${PROCESSING_SERVER_PORT}
+      depends_on:
+        - kafka
+        - pinot
+      networks:
+        - internal
+
+    analytics-service:
+      build:
+        context: ./analytics-service
+      container_name: rta-analytics-service
+      ports:
+        - "8003:8003"
+      environment:
+        - SERVER_PORT=${ANALYTICS_SERVER_PORT}
+        - PINOT_TABLE=${ANALYTICS_PINOT_ORDER_PLACED_RT_TABLE}
+        - PINOT_HOSTS=${ANALYTICS_PINOT_BROKER_HOSTS}
+      depends_on:
+        - kafka
+      networks:
+        - internal
+
+  volumes:
+    kafka_data:
+
+  networks:
+    internal:

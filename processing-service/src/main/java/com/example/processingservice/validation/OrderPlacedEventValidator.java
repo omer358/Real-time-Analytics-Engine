@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Component
 @Slf4j
-public class PurchaseEventValidator {
+public class OrderPlacedEventValidator {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 

@@ -1,6 +1,6 @@
-package com.example.ingestionservice.config;
+package com.example.processingservice.config;
 
-import com.example.ingestionservice.model.OrderPlacedEvent;
+import com.example.processingservice.model.FlatOrderProduct;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,8 +26,7 @@ public class KafkaProducerConfig {
     private int retries;
 
     @Bean
-    public ProducerFactory<String, OrderPlacedEvent> producerFactory() {
-
+    public ProducerFactory<String, FlatOrderProduct> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -44,9 +43,9 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate() {
-        KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate = new KafkaTemplate<>(producerFactory());
-        kafkaTemplate.setProducerListener(new LoggingProducerListener<String, OrderPlacedEvent>());
+    public KafkaTemplate<String, FlatOrderProduct> kafkaTemplate() {
+        KafkaTemplate<String, FlatOrderProduct> kafkaTemplate = new KafkaTemplate<>(producerFactory());
+        kafkaTemplate.setProducerListener(new LoggingProducerListener<String, FlatOrderProduct>());
         return kafkaTemplate;
     }
 }

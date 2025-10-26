@@ -1,0 +1,19 @@
+### order-placed event request
+POST {{baseUrl}}/order-placed
+Content-Type: application/json
+
+{
+  "orderId": "1237",
+  "customerId": "447",
+  "totalAmount": 100.00,
+  "timestamp": "{{$isoTimestamp}}",
+  "products": [
+    {
+      "productId": "PROD-459",
+      "name": "Sample Product",
+      "price": 100.00,
+      "quantity": 1
+    }
+  ]
+}
+###

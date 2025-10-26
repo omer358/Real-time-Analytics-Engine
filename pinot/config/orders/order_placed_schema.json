@@ -1,0 +1,43 @@
+{
+  "schemaName": "order_placed_rt",
+  "dimensionFieldSpecs": [
+    {
+      "name": "orderId",
+      "dataType": "STRING"
+    },
+    {
+      "name": "customerId",
+      "dataType": "STRING"
+    },
+    {
+      "name": "productId",
+      "dataType": "STRING"
+    },
+    {
+      "name": "key",
+      "dataType": "STRING"
+    }
+  ],
+  "metricFieldSpecs": [
+    {
+      "name": "quantity",
+      "dataType": "INT"
+    },
+    {
+      "name": "price",
+      "dataType": "DOUBLE"
+    },
+    {
+      "name": "totalAmount",
+      "dataType": "DOUBLE"
+    }
+  ],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "timestamp",
+      "dataType": "LONG",
+      "format": "EPOCH",
+      "granularity": "1:MILLISECONDS"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 package com.example.ingestionservice.service;
 
-import com.example.ingestionservice.model.PurchaseEvent;
+import com.example.ingestionservice.model.OrderPlacedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -10,17 +10,17 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
-public class PurchaseEventProducer {
+public class OrderPlacedEventProducer {
 
-    private final KafkaTemplate<String, PurchaseEvent> kafkaTemplate;
-    private static final String TOPIC = "purchase-events";
+    private static final String TOPIC = "order-placed-events";
+    private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
-    public PurchaseEventProducer(KafkaTemplate<String, PurchaseEvent> kafkaTemplate) {
+    public OrderPlacedEventProducer(KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void send(PurchaseEvent event) {
-        CompletableFuture<SendResult<String, PurchaseEvent>> future =
+    public void send(OrderPlacedEvent event) {
+        CompletableFuture<SendResult<String, OrderPlacedEvent>> future =
                 kafkaTemplate.send(TOPIC, event.getOrderId(), event);
 
         future.whenComplete((result, ex) -> {
