@@ -1,5 +1,6 @@
 package com.example.analyticsservice.service;
 
+import jakarta.annotation.PostConstruct;
 import org.apache.pinot.client.Connection;
 import org.apache.pinot.client.ConnectionFactory;
 import org.apache.pinot.client.ResultSet;
@@ -14,20 +15,18 @@ import static org.jooq.impl.DSL.*;
 @Service
 public class PinotQueryService {
 
-    private final Connection connection = ConnectionFactory.fromHostList("localhost:8000");
+    @Value("${pinot.hosts}")
+    private String pinotHosts;
 
     @Value("${pinot.table}")
     private String tableName;
+
+    private Connection connection;
 
     // Helper: executes Pinot SQL query and returns first ResultSet
     private static ResultSet runQuery(Connection connection, String query) {
         ResultSetGroup resultSetGroup = connection.execute(query);
         return resultSetGroup.getResultSet(0);
-    }
-
-    // Custom inline expression builder since jOOQ doesn’t parse Pinot functions
-    private static org.jooq.Field<Object> inlineExpression(String expr) {
-        return field(expr);
     }
 
     public double getTotalRevenue(String interval) {
@@ -56,12 +55,21 @@ public class PinotQueryService {
         return rs.getRowCount() > 0 ? rs.getLong(0) : 0L;
     }
 
-    // Helper: converts human-readable interval to milliseconds expression
+    // Custom inline expression builder since jOOQ doesn’t parse Pinot functions
+    private static org.jooq.Field<Object> inlineExpression(String expr) {
+        return field(expr);
+    }
+
     private String getMillis(String interval) {
         return switch (interval.toLowerCase()) {
             case "minute" -> "60 * 1000";
             case "day" -> "24 * 3600 * 1000";
             default -> "3600 * 1000";
         };
+    }
+
+    @PostConstruct
+    public void init() {
+        this.connection = ConnectionFactory.fromHostList(pinotHosts);
     }
 }
