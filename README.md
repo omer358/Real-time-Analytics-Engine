@@ -2,28 +2,27 @@
 
 ## 📌 Overview
 
-The **Real-Time E-Commerce Analytics Engine** is a backend system that demonstrates how modern e-commerce platforms (like Amazon or Shopify) track and analyze events in **real-time**.
-
-It is built with **Spring Boot (Java)** and **Apache Kafka**, with **PostgreSQL integration planned** for persistence.
+The **Real-Time E-Commerce Analytics Engine** is a backend system that demonstrates **real-time event ingestion and analytics** for e-commerce platforms. It shows how events like orders or purchases can be processed and analyzed in **near real-time** using **Kafka** and **Apache Pinot**.
 
 The system is designed to:
 
-1. **Ingest e-commerce events** — such as purchases, product views, and cart updates — through REST APIs.
-2. **Stream events into Kafka** for scalable and decoupled processing.
-3. **Consume events in real-time** to log or eventually process analytics.
-4. **Store aggregated results** in PostgreSQL (planned for future phases).
+1. **Ingest e-commerce events** — e.g., orders — via REST APIs.
+2. **Stream events into Kafka** for scalable, decoupled processing.
+3. **Consume events in real-time** via microservices.
+4. **Query aggregated analytics** from **Pinot** in near real-time.
 
-This project follows an **event-driven architecture**, which enables **scalability, loose coupling, and near real-time analytics**, similar to what large-scale distributed systems use in production.
+This project follows an **event-driven architecture**, enabling **scalability, loose coupling, and near real-time insights**, similar to enterprise-level e-commerce platforms.
 
 ---
 
 ## 🏗️ Current Architecture
 
-* **Ingestion Service** → REST API endpoints to accept e-commerce events and publish them into Kafka.
-* **Processing Service** → Kafka consumer service that listens to events, validates them, and logs incoming events.
-* **Analytics Service** → planned REST API service for analytics queries.
-* **Kafka** → acts as the event backbone.
-* **PostgreSQL** → planned for storing processed/aggregated results.
+* **Ingestion Service** → REST endpoints to accept events and publish them to Kafka.
+* **Processing Service** → Kafka consumer service; currently logs incoming events (processing and aggregation planned).
+* **Analytics Service** → Queries real-time analytics from **Pinot**.
+* **Apache Kafka** → Event backbone for decoupled streaming.
+* **Apache Pinot** → Real-time OLAP store for analytics queries.
+* **PostgreSQL** → Planned for storing historical/aggregated results.
 
 ---
 
@@ -31,11 +30,13 @@ This project follows an **event-driven architecture**, which enables **scalabili
 
 ```bash
 real-time-analytics/
-│── ingestion-service/     # Handles incoming events and publishes to Kafka
-│── processing-service/    # Consumes Kafka events and logs them (processing logic planned)
-│── analytics-service/     # Placeholder for future analytics REST APIs
-│── api-requests/          # HTTP request samples for testing ingestion
-│── pom.xml                # Parent Maven configuration
+│── ingestion-service/      # Accepts events, publishes to Kafka
+│── processing-service/     # Consumes Kafka events, logs/validates them
+│── analytics-service/      # Queries analytics from Pinot
+│── pinot/                  # Pinot table configs and schemas
+│── api-requests/           # Sample API requests for testing
+│── docker-compose.yml
+│── pom.xml                 # Parent Maven configuration
 │── README.md
 ```
 
@@ -44,7 +45,8 @@ real-time-analytics/
 ## 🛠️ Tech Stack
 
 * **Backend:** Java 17, Spring Boot 3
-* **Event Streaming:** Apache Kafka (KRaft mode, no Zookeeper)
+* **Event Streaming:** Apache Kafka
+* **Real-time Analytics:** Apache Pinot
 * **Database (Planned):** PostgreSQL
 * **Build Tool:** Maven
 * **Containerization:** Docker & Docker Compose
@@ -58,40 +60,62 @@ real-time-analytics/
 
 * Java 17
 * Maven
-* Docker & Docker Compose (for Kafka and local multi-service setup)
+* Docker & Docker Compose
 * Optional: IntelliJ for running services locally
 
 ---
 
 ### Environment Variables
 
-Create a `.env` file in the project root:
+Create a `.env` file:
 
 ```dotenv
-# Kafka bootstrap servers
+# -----------------------
+# Kafka Configuration
+# -----------------------
+KAFKA_ADVERTISED_LISTENER_INTERNAL=kafka:9092
+KAFKA_ADVERTISED_LISTENER_EXTERNAL=<host:port>  # e.g., localhost:29092
 SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
 
-# Kafka producer settings
+# Kafka producer & consumer settings
 SPRING_KAFKA_PRODUCER_ACKS=all
 SPRING_KAFKA_PRODUCER_RETRIES=3
-SPRING_KAFKA_PRODUCER_LINGER_MS=5
-SPRING_KAFKA_PRODUCER_DELIVERY_TIMEOUT_MS=30000
-SPRING_KAFKA_PRODUCER_REQUEST_TIMEOUT_MS=20000
-
-# Kafka consumer settings
-SPRING_KAFKA_CONSUMER_GROUP_ID=processing-group
+SPRING_KAFKA_CONSUMER_PROCESSING_GROUP_ID=processing-group
+SPRING_KAFKA_CONSUMER_ANALYTICS_GROUP_ID=analytics-group
 SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET=earliest
 
-# Server ports
-INGESTION_SERVICE_PORT=8001
-PROCESSING_SERVICE_PORT=8002
+# -----------------------
+# PostgreSQL Configuration
+# -----------------------
+SPRING_DATASOURCE_URL=jdbc:postgresql://<host>:5432/<database>  # e.g., postgres:5432/analytics_db
+SPRING_DATASOURCE_USERNAME=<username>
+SPRING_DATASOURCE_PASSWORD=<password>
+SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+
+SPRING_JPA_HIBERNATE_DDL_AUTO=update
+SPRING_JPA_SHOW_SQL=true
+SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
+
+# -----------------------
+# Service Ports
+# -----------------------
+INGESTION_SERVER_PORT=8001
+PROCESSING_SERVER_PORT=8002
+ANALYTICS_SERVER_PORT=8003
+
+# -----------------------
+# Pinot Configuration
+# -----------------------
+ANALYTICS_PINOT_ORDER_PLACED_RT_TABLE=<pinot_table_name>  # e.g., order_placed_rt
+ANALYTICS_PINOT_BROKER_HOSTS=<pinot_host:port>           # e.g., pinot:8000
+
 ```
 
-These variables are injected automatically by Docker Compose. `application.properties` contains fallback defaults to run services locally.
+These variables are injected automatically by Docker Compose. `application.properties` provides fallback defaults for local runs.
 
 ---
 
-### Running Kafka via Docker Compose
+### Running Services via Docker Compose
 
 ```bash
 docker-compose up -d
@@ -99,82 +123,112 @@ docker-compose up -d
 
 This will start:
 
-* Kafka broker (internal port 9092, external mapped port 29092)
-* No Zookeeper (Kafka Kraft mode)
+* **Kafka** broker
+* **Pinot** server (QuickStart streaming mode)
+* **Ingestion, Processing, and Analytics services**
 
-Check logs via:
+Check logs:
 
 ```bash
-docker-compose logs -f kafka
+docker-compose logs -f ingestion-service
+docker-compose logs -f processing-service
+docker-compose logs -f analytics-service
 ```
-
-> When running Spring Boot locally, use `localhost:29092` as the Kafka bootstrap server.
 
 ---
 
-### Running Services
+### Running Services Locally
 
-#### Option 1: Inside Docker
+1. Start Kafka and Pinot via Docker Compose:
 
 ```bash
-docker-compose up -d ingestion-service
-docker-compose up -d processing-service
+docker-compose up -d kafka pinot
 ```
 
-#### Option 2: Locally (IntelliJ / Maven)
-
-1. Ensure Kafka is running (`docker-compose up kafka`).
-2. Run Spring Boot services:
+2. Run services from IntelliJ or Maven:
 
 ```bash
 cd ingestion-service
 mvn spring-boot:run
+
+cd processing-service
+mvn spring-boot:run
+
+cd analytics-service
+mvn spring-boot:run
 ```
+
+> Use `localhost:29092` as Kafka bootstrap server for local runs.
+> Use `localhost:8000` as Pinot broker for local runs.
 
 ---
 
-### Testing Ingestion Endpoints
+### Testing Event Ingestion
 
-Send a purchase event:
+POST an order-placed event:
 
 ```bash
-curl -X POST http://localhost:8001/api/v1/purchase \
+curl -X POST http://localhost:8001/order-placed \
 -H "Content-Type: application/json" \
--d '{
-  "orderId": "423",
-  "productId": "PROD-456",
-  "customerId": "123",
-  "amount": 99.99,
-  "timestamp": "2025-08-27T10:00:00Z"
-}'
+-d "{
+  \"orderId\": \"1236\",
+  \"customerId\": \"347\",
+  \"totalAmount\": 70.99,
+  \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",
+  \"products\": [
+    {
+      \"productId\": \"PROD-457\",
+      \"name\": \"Sample Product 2\",
+      \"price\": 70.99,
+      \"quantity\": 1
+    }
+  ]
+}"
 ```
 
 Processing service logs incoming events to verify consumption.
 
 ---
 
-## 🎯 Current Features
+### Testing Analytics Queries
 
-* **Ingestion service** with PurchaseEvent endpoint
-* **Processing service**: consumes, validates, and logs events from Kafka
-* Dockerized services with environment variable configuration
+GET total revenue for the last hour:
+
+```bash
+curl http://localhost:8003/analytics/revenue?interval=hour
+```
+
+GET total order count:
+
+```bash
+curl http://localhost:8003/analytics/orders?interval=hour
+```
 
 ---
 
-## 🛠️ Future Enhancements
+## 🎯 Current Features
 
-* Implement real **analytics processing** in processing service
-* Persist processed metrics into **PostgreSQL**
-* Add REST API endpoints in analytics-service for querying analytics
-* Implement dead-letter queues for invalid events
+* **Event ingestion service** — receives order events and pushes to Kafka
+* **Processing service** — consumes and logs events from Kafka
+* **Analytics service** — queries **Pinot** for total revenue and order count
+* **Dockerized services** with environment variable support
+
+---
+
+## 🛠️ Next Steps
+
+* Implement **processing logic**: validation, enrichment, and aggregation
+* Persist metrics to **PostgreSQL** for historical reporting
+* Expand analytics-service with more queries (e.g., top-selling products, revenue by customer)
+* Implement **dead-letter queues** for invalid events
+* Add unit and integration tests for full pipeline
 
 ---
 
 ## 📖 Learning Goals
 
-* Practice with **Kafka event streaming**
-* Build a **modular microservices architecture** with Spring Boot
-* Learn **real-time e-commerce analytics pipelines**
-* Create a **resume-ready project** demonstrating event-driven design
-
----
+* Kafka event streaming and real-time processing
+* Apache Pinot real-time analytics queries
+* Microservices architecture with Spring Boot
+* Event-driven design for scalable e-commerce systems
+* Docker Compose orchestration for local development
