@@ -120,6 +120,8 @@
         - "8003:8003"
       environment:
         - SERVER_PORT=${ANALYTICS_SERVER_PORT}
+        - PINOT_TABLE=${ANALYTICS_PINOT_ORDER_PLACED_RT_TABLE}
+        - PINOT_HOSTS=${ANALYTICS_PINOT_BROKER_HOSTS}
       depends_on:
         - kafka
       networks:
