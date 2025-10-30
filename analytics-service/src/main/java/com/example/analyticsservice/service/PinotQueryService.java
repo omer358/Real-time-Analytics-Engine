@@ -46,7 +46,7 @@ public class PinotQueryService {
      * Returns a time-series of order counts for a given interval
      * @param interval "minute", "hour", or "day"
      */
-    public List<Map<String,Object>> getOrderCountTrend(String interval) {
+    public List<Map<String,Object>> getOrderCountTimeSeries(String interval) {
         long bucketSize = timestampAgo(interval);
 
         long startTime = System.currentTimeMillis() - bucketSize * 60; // last 60 buckets as example

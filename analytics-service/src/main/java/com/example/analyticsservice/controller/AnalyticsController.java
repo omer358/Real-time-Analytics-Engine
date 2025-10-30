@@ -40,12 +40,12 @@ public class AnalyticsController {
         return ResponseEntity.ok(new AnalyticsResponse<>(interval.name().toLowerCase(Locale.ROOT), revenue));
     }
 
-    @GetMapping("/orders/trend")
+    @GetMapping("/orders/time-series")
     public ResponseEntity<AnalyticsResponse<List<Map<String, Object>>>> getOrderCountTrend(
             @RequestParam(defaultValue = "HOUR") Interval interval) {
 
         // Call service
-        List<Map<String, Object>> trend = pinotQueryService.getOrderCountTrend(interval.name());
+        List<Map<String, Object>> trend = pinotQueryService.getOrderCountTimeSeries(interval.name());
 
         // Wrap in response entity
         AnalyticsResponse<List<Map<String, Object>>> response = new AnalyticsResponse<>(
