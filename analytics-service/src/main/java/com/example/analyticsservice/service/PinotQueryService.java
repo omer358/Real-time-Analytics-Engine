@@ -8,6 +8,11 @@ import org.apache.pinot.client.ResultSetGroup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class PinotQueryService {
 
@@ -35,6 +40,43 @@ public class PinotQueryService {
                 " WHERE \"timestamp\" >= " + timestampAgo(interval);
         return (long) executeNumericQuery(sql, 0L);
     }
+
+
+    /**
+     * Returns a time-series of order counts for a given interval
+     * @param interval "minute", "hour", or "day"
+     */
+    public List<Map<String,Object>> getOrderCountTrend(String interval) {
+        long bucketSize = timestampAgo(interval);
+
+        long startTime = System.currentTimeMillis() - bucketSize * 60; // last 60 buckets as example
+
+        String sql = String.format(
+                "SELECT FLOOR(\"timestamp\"/%d)*%d AS bucket, COUNT(*) AS orderCount " +
+                        "FROM %s " +
+                        "WHERE \"timestamp\" >= %d " +
+                        "GROUP BY bucket " +
+                        "ORDER BY bucket ASC",
+                bucketSize, bucketSize, tableName, startTime
+        );
+
+        ResultSetGroup group = connection.execute(sql);
+        ResultSet rs = group.getResultSet(0);
+        List<Map<String,Object>> trend = new ArrayList<>();
+
+        for (int i = 0; i < rs.getRowCount(); i++) {
+            double bucketDouble = rs.getDouble(i, 0); // bucket column
+            long bucketMillis = (long) bucketDouble;  // convert to long
+            long orderCount = rs.getLong(i, 1);
+
+            trend.add(Map.of(
+                    "timestamp", Instant.ofEpochMilli(bucketMillis).toString(),
+                    "orderCount", orderCount
+            ));
+        }
+        return trend;
+    }
+
 
     // Helper: executes Pinot SQL and returns single numeric value
     private double executeNumericQuery(String sql, double defaultValue) {

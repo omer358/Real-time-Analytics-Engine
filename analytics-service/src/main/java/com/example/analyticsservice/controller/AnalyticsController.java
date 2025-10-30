@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/analytics")
@@ -37,4 +39,20 @@ public class AnalyticsController {
         double revenue = pinotQueryService.getTotalRevenue(interval.name().toLowerCase(Locale.ROOT));
         return ResponseEntity.ok(new AnalyticsResponse<>(interval.name().toLowerCase(Locale.ROOT), revenue));
     }
+
+    @GetMapping("/orders/trend")
+    public ResponseEntity<AnalyticsResponse<List<Map<String, Object>>>> getOrderCountTrend(
+            @RequestParam(defaultValue = "HOUR") Interval interval) {
+
+        // Call service
+        List<Map<String, Object>> trend = pinotQueryService.getOrderCountTrend(interval.name());
+
+        // Wrap in response entity
+        AnalyticsResponse<List<Map<String, Object>>> response = new AnalyticsResponse<>(
+                interval.name().toLowerCase(), trend
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
 }
