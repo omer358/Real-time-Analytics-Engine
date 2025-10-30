@@ -42,7 +42,7 @@ public class AnalyticsController {
 
     @GetMapping("/orders/time-series")
     public ResponseEntity<AnalyticsResponse<List<Map<String, Object>>>> getOrderCountTrend(
-            @RequestParam(defaultValue = "HOUR") Interval interval) {
+            @Valid @RequestParam(defaultValue = "HOUR") Interval interval) {
 
         // Call service
         List<Map<String, Object>> trend = pinotQueryService.getOrderCountTimeSeries(interval.name());
@@ -53,6 +53,14 @@ public class AnalyticsController {
         );
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("orders/aov")
+    public ResponseEntity<AnalyticsResponse<Double>> getTotalAov(
+            @Valid @RequestParam(name = "interval", defaultValue = "HOUR") Interval interval
+    ){
+        double aov = pinotQueryService.getAverageOrderValue(interval.name().toLowerCase(Locale.ROOT));
+        return ResponseEntity.ok(new AnalyticsResponse<>(interval.name().toLowerCase(Locale.ROOT), aov));
     }
 
 }

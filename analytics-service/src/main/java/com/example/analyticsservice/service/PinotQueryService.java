@@ -77,6 +77,26 @@ public class PinotQueryService {
         return trend;
     }
 
+    public double getAverageOrderValue(String interval) {
+        String sql = String.format(
+                "SELECT SUM(totalAmount) AS total, COUNT(*) AS orders FROM %s WHERE \"timestamp\" >= %d",
+                tableName, timestampAgo(interval)
+        );
+
+        ResultSetGroup group = connection.execute(sql);
+        ResultSet rs = group.getResultSet(0);
+
+        if (rs.getRowCount() == 0) return 0.0;
+
+        double total = rs.getDouble(0, 0);
+        double orders = rs.getDouble(0, 1);
+        if (orders == 0) return 0.0;
+
+        return total / orders;
+    }
+
+
+
 
     // Helper: executes Pinot SQL and returns single numeric value
     private double executeNumericQuery(String sql, double defaultValue) {
