@@ -21,6 +21,7 @@
         <module>analytics-service</module>
         <module>ingestion-service</module>
         <module>processing-service</module>
+        <module>common-lib</module>
     </modules>
 
     <dependencyManagement>

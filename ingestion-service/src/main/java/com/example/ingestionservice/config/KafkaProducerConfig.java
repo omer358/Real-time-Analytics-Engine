@@ -1,6 +1,6 @@
 package com.example.ingestionservice.config;
 
-import com.example.ingestionservice.model.OrderPlacedEvent;
+import com.example.commonlib.events.OrderPlacedEvent;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;

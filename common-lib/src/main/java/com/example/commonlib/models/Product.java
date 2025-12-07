@@ -1,4 +1,4 @@
-package com.example.processingservice.model;
+package com.example.commonlib.models;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Product {
     @NotBlank(message = "Product ID is required")
     private String productId;

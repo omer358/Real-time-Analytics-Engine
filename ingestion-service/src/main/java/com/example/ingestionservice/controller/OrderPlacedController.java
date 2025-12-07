@@ -1,6 +1,6 @@
 package com.example.ingestionservice.controller;
 
-import com.example.ingestionservice.model.OrderPlacedEvent;
+import com.example.commonlib.events.OrderPlacedEvent;
 import com.example.ingestionservice.service.OrderPlacedEventProducer;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

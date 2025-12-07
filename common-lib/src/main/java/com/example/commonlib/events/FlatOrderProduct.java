@@ -1,4 +1,4 @@
-package com.example.processingservice.model;
+package com.example.commonlib.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
