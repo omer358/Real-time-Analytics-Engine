@@ -1,6 +1,6 @@
 package com.example.ingestionservice.service;
 
-import com.example.ingestionservice.model.OrderPlacedEvent;
+import com.example.commonlib.events.OrderPlacedEvent;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.kafka.core.KafkaTemplate;
