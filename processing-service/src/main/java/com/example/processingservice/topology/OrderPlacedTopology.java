@@ -1,4 +1,4 @@
-package com.example.processingservice.stream;
+package com.example.processingservice.topology;
 
 import com.example.commonlib.events.FlatOrderProduct;
 import com.example.commonlib.events.OrderPlacedEvent;
@@ -34,21 +34,23 @@ public class OrderPlacedTopology {
                 builder.stream(KafkaTopics.ORDER_PLACED_EVENTS,
                         Consumed.with(Serdes.String(), orderSerde));
 
-        KStream<String, FlatOrderProduct> flatStream = source
-                .filter((key, order) -> validator.validate(order))
-                .flatMapValues(order -> order.getProducts().stream()
-                        .map(p -> new FlatOrderProduct(
-                                order.getOrderId(),
-                                order.getCustomerId(),
-                                order.getTotalAmount(),
-                                order.getTimestamp().toEpochMilli(),
-                                p.getProductId(),
-                                p.getQuantity(),
-                                p.getPrice(),
-                                order.getOrderId() + "-" + p.getProductId()
-                        ))
-                        .collect(Collectors.toList())
-                );
+        KStream<String, OrderPlacedEvent> validOrders = source
+                .filter((key, order) -> validator.validate(order));
+
+        KStream<String, FlatOrderProduct> flatStream = validOrders.flatMapValues(order ->
+                order.getProducts().stream()
+                .map(p -> new FlatOrderProduct(
+                        order.getOrderId(),
+                        order.getCustomerId(),
+                        order.getTotalAmount(),
+                        order.getTimestamp().toEpochMilli(),
+                        p.getProductId(),
+                        p.getQuantity(),
+                        p.getPrice(),
+                        order.getOrderId() + "-" + p.getProductId()
+                ))
+                .collect(Collectors.toList())
+        );
 
         flatStream.to(KafkaTopics.ORDER_PLACED_FLAT_EVENTS,
                 Produced.with(Serdes.String(), flatSerde));
