@@ -1,4 +1,17 @@
 services:
+  db:
+    image: postgres:latest
+    restart: always
+    container_name: rta-e-commerce-db
+    hostname: postgres
+    ports:
+      - "5000:5432"
+    environment:
+      POSTGRES_DB: rta_ecommerce
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+    networks:
+      - internal
   zookeeper:
     image: zookeeper:latest
     container_name: rta-zookeeper
