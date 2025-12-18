@@ -2,23 +2,27 @@
 
 ## 📌 Overview
 
-The **Real-Time E-Commerce Analytics Engine** is a backend system that demonstrates **real-time event ingestion and analytics** for e-commerce platforms. It shows how events like orders or purchases can be processed and analyzed in **near real-time** using **Kafka** and **Apache Pinot**.
+The **Real-Time E-Commerce Analytics Engine** is a backend system that demonstrates **real-time event ingestion and analytics** for e-commerce platforms. It shows how events like orders or purchases can be processed and analyzed in **real-time** using **Apache Kafka**, **Kafka Streams** and **Apache Pinot**.
 
 The system is designed to:
 
 1. **Ingest e-commerce events** — e.g., orders — via REST APIs.
 2. **Stream events into Kafka** for scalable, decoupled processing.
-3. **Consume events in real-time** via microservices.
-4. **Query aggregated analytics** from **Pinot** in near real-time.
+3. **Process events in real time using Kafka Streams** (validation, transformation, enrichment).
+4. **Query aggregated analytics** from **Pinot** in real-time.
 
-This project follows an **event-driven architecture**, enabling **scalability, loose coupling, and near real-time insights**, similar to enterprise-level e-commerce platforms.
+This project follows an **event-driven architecture**, enabling **scalability, loose coupling, and real-time insights**, similar to enterprise-level e-commerce platforms.
 
 ---
 
 ## 🏗️ Current Architecture
 
 * **Ingestion Service** → REST endpoints to accept events and publish them to Kafka.
-* **Processing Service** → Kafka consumer service; currently logs incoming events (processing and aggregation planned).
+* **Processing Service (Kafka Stream)** 
+  → Uses Kafka Streams to process events in real time:
+  * Validates incoming order events 
+  * Transforms orders into flat, analytics-friendly records 
+  * Publishes derived events back to Kafka
 * **Analytics Service** → Queries real-time analytics from **Pinot**.
 * **Apache Kafka** → Event backbone for decoupled streaming.
 * **Apache Pinot** → Real-time OLAP store for analytics queries.
@@ -31,7 +35,7 @@ This project follows an **event-driven architecture**, enabling **scalability, l
 ```bash
 real-time-analytics/
 │── ingestion-service/      # Accepts events, publishes to Kafka
-│── processing-service/     # Consumes Kafka events, logs/validates them
+│── processing-service/      # Kafka Streams topology (real-time processing)
 │── analytics-service/      # Queries analytics from Pinot
 │── pinot/                  # Pinot table configs and schemas
 │── api-requests/           # Sample API requests for testing
@@ -209,7 +213,8 @@ curl http://localhost:8003/analytics/orders?interval=hour
 ## 🎯 Current Features
 
 * **Event ingestion service** — receives order events and pushes to Kafka
-* **Processing service** — consumes and logs events from Kafka
+* **Kafka Streams–based processing service**
+  → Real-time validation and transformation of events using a declarative stream topology.
 * **Analytics service** — queries **Pinot** for total revenue and order count
 * **Dockerized services** with environment variable support
 
@@ -217,11 +222,16 @@ curl http://localhost:8003/analytics/orders?interval=hour
 
 ## 🛠️ Next Steps
 
-* Implement **processing logic**: validation, enrichment, and aggregation
-* Persist metrics to **PostgreSQL** for historical reporting
-* Expand analytics-service with more queries (e.g., top-selling products, revenue by customer)
-* Implement **dead-letter queues** for invalid events
-* Add unit and integration tests for full pipeline
+* Persist enriched analytics and aggregated metrics to **PostgreSQL** for long-term and historical reporting
+* Introduce core domain tables (e.g., **products**, **categories**) as systems of record to support richer analytics
+* Stream database changes to Kafka using **CDC (Debezium + Kafka Connect)** instead of manual event publishing
+* Expand `analytics-service` with advanced queries (e.g., top-selling products, revenue by category/customer, time-windowed KPIs)
+* Add real-time aggregations feeding analytical stores (e.g., **Apache Pinot** or **ClickHouse**)
+* Implement **dead-letter queues (DLQ)** for invalid, malformed, or non-processable events
+* Add unit and integration tests covering the full ingestion → processing → persistence pipeline
+
+This makes the roadmap explicit, realistic, and clearly senior-level.
+
 
 ---
 
