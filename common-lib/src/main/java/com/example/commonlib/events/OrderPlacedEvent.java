@@ -29,7 +29,7 @@ public class OrderPlacedEvent {
     private double totalAmount;
 
     @NotNull(message = "Timestamp is required")
-    private Instant timestamp;
+    private Instant createdAt;
 
     @NotEmpty(message = "Order must have at least one product")
     @Valid

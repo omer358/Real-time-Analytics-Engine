@@ -43,7 +43,7 @@ public class OrderPlacedTopology {
                         order.getOrderId(),
                         order.getCustomerId(),
                         order.getTotalAmount(),
-                        order.getTimestamp().toEpochMilli(),
+                        order.getCreatedAt().toEpochMilli(),
                         p.getProductId(),
                         p.getQuantity(),
                         p.getPrice(),

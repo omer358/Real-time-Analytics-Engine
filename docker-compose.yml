@@ -10,6 +10,10 @@ services:
       POSTGRES_DB: rta_ecommerce
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+      - ./postgres/data:/data
+      - ./postgres/init:/docker-entrypoint-initdb.d
     networks:
       - internal
   zookeeper:
@@ -145,6 +149,7 @@ services:
 
 volumes:
   kafka_data:
+  postgres_data:
 
 networks:
   internal:

@@ -6,13 +6,12 @@ Content-Type: application/json
   "orderId": "1238",
   "customerId": "448",
   "totalAmount": 50.00,
-  "timestamp": "{{$isoTimestamp}}",
+  "createdAt": "{{$isoTimestamp}}",
   "products": [
     {
       "productId": "PROD-452",
-      "name": "Sample Product 2",
-      "price": 50.00,
-      "quantity": 1
+      "quantity": 1,
+      "price": 50.00
     }
   ]
 }

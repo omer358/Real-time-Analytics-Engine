@@ -1,0 +1,11 @@
+-- COPY category(id, name, parent_category_id)
+--     FROM '/data/categories.csv'
+--     DELIMITER ',' CSV HEADER;
+--
+-- COPY brand(id, name)
+--     FROM '/data/brands.csv'
+--     DELIMITER ',' CSV HEADER;
+--
+-- COPY product(id, name, description, brand_id, price, category_id)
+--     FROM '/data/products.csv'
+--     DELIMITER ',' CSV HEADER;

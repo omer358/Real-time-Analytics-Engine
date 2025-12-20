@@ -1,0 +1,201 @@
+id,name,description,brand_id,price,category_id
+1,Dell iPhone 16 128GB,iPhone 16 with 128GB storage,4,2401.58,1
+2,Dell iPhone 16 128GB,iPhone 16 with 128GB storage,4,770.68,1
+3,Samsung iPhone 16 128GB,iPhone 16 with 128GB storage,2,1818.56,1
+4,HP iPhone 16 128GB,iPhone 16 with 128GB storage,5,1577.2,1
+5,Samsung iPhone 16 128GB,iPhone 16 with 128GB storage,2,1320.81,1
+6,HP iPhone 16 128GB,iPhone 16 with 128GB storage,5,769.57,1
+7,HP iPhone 16 128GB,iPhone 16 with 128GB storage,5,1482.83,1
+8,Dell iPhone 16 128GB,iPhone 16 with 128GB storage,4,1977.47,1
+9,Dell iPhone 16 128GB,iPhone 16 with 128GB storage,4,2126.73,1
+10,Apple iPhone 16 128GB,iPhone 16 with 128GB storage,1,1353.62,1
+11,Sony iPhone 16 256GB,iPhone 16 with 256GB storage,3,1780.09,1
+12,Samsung iPhone 16 256GB,iPhone 16 with 256GB storage,2,807.01,1
+13,Dell iPhone 16 256GB,iPhone 16 with 256GB storage,4,720.7,1
+14,HP iPhone 16 256GB,iPhone 16 with 256GB storage,5,837.0,1
+15,Samsung iPhone 16 256GB,iPhone 16 with 256GB storage,2,2285.5,1
+16,Dell iPhone 16 256GB,iPhone 16 with 256GB storage,4,865.64,1
+17,HP iPhone 16 256GB,iPhone 16 with 256GB storage,5,1657.78,1
+18,Samsung iPhone 16 256GB,iPhone 16 with 256GB storage,2,1216.69,1
+19,Apple iPhone 16 256GB,iPhone 16 with 256GB storage,1,1594.46,1
+20,HP iPhone 16 256GB,iPhone 16 with 256GB storage,5,1457.9,1
+21,Apple iPhone 16 512GB,iPhone 16 with 512GB storage,1,1527.83,1
+22,Apple iPhone 16 512GB,iPhone 16 with 512GB storage,1,2033.56,1
+23,Dell iPhone 16 512GB,iPhone 16 with 512GB storage,4,2150.36,1
+24,HP iPhone 16 512GB,iPhone 16 with 512GB storage,5,893.29,1
+25,Apple iPhone 16 512GB,iPhone 16 with 512GB storage,1,1904.06,1
+26,Sony iPhone 16 512GB,iPhone 16 with 512GB storage,3,1477.09,1
+27,Sony iPhone 16 512GB,iPhone 16 with 512GB storage,3,1048.6,1
+28,HP iPhone 16 512GB,iPhone 16 with 512GB storage,5,2023.36,1
+29,Sony iPhone 16 512GB,iPhone 16 with 512GB storage,3,2362.77,1
+30,Apple iPhone 16 512GB,iPhone 16 with 512GB storage,1,1731.05,1
+31,HP Galaxy S 24 128GB,Galaxy S 24 with 128GB storage,5,1995.9,1
+32,Apple Galaxy S 24 128GB,Galaxy S 24 with 128GB storage,1,733.59,1
+33,Apple Galaxy S 24 128GB,Galaxy S 24 with 128GB storage,1,996.66,1
+34,Apple Galaxy S 24 128GB,Galaxy S 24 with 128GB storage,1,1789.54,1
+35,Samsung Galaxy S 24 128GB,Galaxy S 24 with 128GB storage,2,2437.31,1
+36,Sony Galaxy S 24 128GB,Galaxy S 24 with 128GB storage,3,882.93,1
+37,Apple Galaxy S 24 128GB,Galaxy S 24 with 128GB storage,1,1065.25,1
+38,Sony Galaxy S 24 128GB,Galaxy S 24 with 128GB storage,3,1250.69,1
+39,Apple Galaxy S 24 128GB,Galaxy S 24 with 128GB storage,1,1014.12,1
+40,Sony Galaxy S 24 128GB,Galaxy S 24 with 128GB storage,3,1258.89,1
+41,Apple Galaxy S 24 256GB,Galaxy S 24 with 256GB storage,1,1222.33,1
+42,Apple Galaxy S 24 256GB,Galaxy S 24 with 256GB storage,1,1747.05,1
+43,Sony Galaxy S 24 256GB,Galaxy S 24 with 256GB storage,3,1115.34,1
+44,HP Galaxy S 24 256GB,Galaxy S 24 with 256GB storage,5,1995.56,1
+45,Dell Galaxy S 24 256GB,Galaxy S 24 with 256GB storage,4,1248.13,1
+46,Dell Galaxy S 24 256GB,Galaxy S 24 with 256GB storage,4,1811.97,1
+47,Apple Galaxy S 24 256GB,Galaxy S 24 with 256GB storage,1,1861.56,1
+48,Dell Galaxy S 24 256GB,Galaxy S 24 with 256GB storage,4,2322.66,1
+49,Apple Galaxy S 24 256GB,Galaxy S 24 with 256GB storage,1,2008.35,1
+50,Sony Galaxy S 24 256GB,Galaxy S 24 with 256GB storage,3,1380.3,1
+51,Samsung Galaxy S 24 512GB,Galaxy S 24 with 512GB storage,2,2279.02,1
+52,HP Galaxy S 24 512GB,Galaxy S 24 with 512GB storage,5,1530.48,1
+53,Sony Galaxy S 24 512GB,Galaxy S 24 with 512GB storage,3,1026.33,1
+54,HP Galaxy S 24 512GB,Galaxy S 24 with 512GB storage,5,1651.02,1
+55,Apple Galaxy S 24 512GB,Galaxy S 24 with 512GB storage,1,763.27,1
+56,Sony Galaxy S 24 512GB,Galaxy S 24 with 512GB storage,3,1720.34,1
+57,Dell Galaxy S 24 512GB,Galaxy S 24 with 512GB storage,4,1673.66,1
+58,Dell Galaxy S 24 512GB,Galaxy S 24 with 512GB storage,4,1489.0,1
+59,Dell Galaxy S 24 512GB,Galaxy S 24 with 512GB storage,4,1902.13,1
+60,Dell Galaxy S 24 512GB,Galaxy S 24 with 512GB storage,4,1698.77,1
+61,Apple MacBook Pro 14 512GB,MacBook Pro 14 with 512GB storage,1,841.09,1
+62,Apple MacBook Pro 14 512GB,MacBook Pro 14 with 512GB storage,1,896.75,1
+63,Sony MacBook Pro 14 512GB,MacBook Pro 14 with 512GB storage,3,1972.55,1
+64,Apple MacBook Pro 14 512GB,MacBook Pro 14 with 512GB storage,1,2013.68,1
+65,Dell MacBook Pro 14 512GB,MacBook Pro 14 with 512GB storage,4,2467.79,1
+66,Apple MacBook Pro 14 512GB,MacBook Pro 14 with 512GB storage,1,1244.72,1
+67,Apple MacBook Pro 14 512GB,MacBook Pro 14 with 512GB storage,1,721.58,1
+68,Sony MacBook Pro 14 512GB,MacBook Pro 14 with 512GB storage,3,1708.91,1
+69,Sony MacBook Pro 14 512GB,MacBook Pro 14 with 512GB storage,3,1490.77,1
+70,Apple MacBook Pro 14 512GB,MacBook Pro 14 with 512GB storage,1,1084.26,1
+71,HP MacBook Pro 14 1024GB,MacBook Pro 14 with 1024GB storage,5,1518.96,1
+72,Samsung MacBook Pro 14 1024GB,MacBook Pro 14 with 1024GB storage,2,1083.27,1
+73,Samsung MacBook Pro 14 1024GB,MacBook Pro 14 with 1024GB storage,2,2063.82,1
+74,Sony MacBook Pro 14 1024GB,MacBook Pro 14 with 1024GB storage,3,1827.38,1
+75,Sony MacBook Pro 14 1024GB,MacBook Pro 14 with 1024GB storage,3,970.89,1
+76,Samsung MacBook Pro 14 1024GB,MacBook Pro 14 with 1024GB storage,2,1400.32,1
+77,HP MacBook Pro 14 1024GB,MacBook Pro 14 with 1024GB storage,5,1548.9,1
+78,Sony MacBook Pro 14 1024GB,MacBook Pro 14 with 1024GB storage,3,1297.6,1
+79,Dell MacBook Pro 14 1024GB,MacBook Pro 14 with 1024GB storage,4,2467.87,1
+80,HP MacBook Pro 14 1024GB,MacBook Pro 14 with 1024GB storage,5,1285.07,1
+81,HP Dell XPS 13 512GB,Dell XPS 13 with 512GB storage,5,1701.27,1
+82,Sony Dell XPS 13 512GB,Dell XPS 13 with 512GB storage,3,1767.56,1
+83,Sony Dell XPS 13 512GB,Dell XPS 13 with 512GB storage,3,1715.25,1
+84,Samsung Dell XPS 13 512GB,Dell XPS 13 with 512GB storage,2,2169.65,1
+85,HP Dell XPS 13 512GB,Dell XPS 13 with 512GB storage,5,2023.25,1
+86,Apple Dell XPS 13 512GB,Dell XPS 13 with 512GB storage,1,2357.54,1
+87,Dell Dell XPS 13 512GB,Dell XPS 13 with 512GB storage,4,2135.0,1
+88,Sony Dell XPS 13 512GB,Dell XPS 13 with 512GB storage,3,1223.48,1
+89,Samsung Dell XPS 13 512GB,Dell XPS 13 with 512GB storage,2,958.84,1
+90,Samsung Dell XPS 13 512GB,Dell XPS 13 with 512GB storage,2,932.13,1
+91,Apple Dell XPS 13 1024GB,Dell XPS 13 with 1024GB storage,1,1256.23,1
+92,HP Dell XPS 13 1024GB,Dell XPS 13 with 1024GB storage,5,1872.68,1
+93,Apple Dell XPS 13 1024GB,Dell XPS 13 with 1024GB storage,1,1182.94,1
+94,Dell Dell XPS 13 1024GB,Dell XPS 13 with 1024GB storage,4,1040.68,1
+95,HP Dell XPS 13 1024GB,Dell XPS 13 with 1024GB storage,5,1258.72,1
+96,Apple Dell XPS 13 1024GB,Dell XPS 13 with 1024GB storage,1,1057.3,1
+97,Apple Dell XPS 13 1024GB,Dell XPS 13 with 1024GB storage,1,743.2,1
+98,HP Dell XPS 13 1024GB,Dell XPS 13 with 1024GB storage,5,1400.02,1
+99,Dell Dell XPS 13 1024GB,Dell XPS 13 with 1024GB storage,4,1249.15,1
+100,Dell Dell XPS 13 1024GB,Dell XPS 13 with 1024GB storage,4,2484.77,1
+101,Samsung PlayStation 5 825GB,PlayStation 5 with 825GB storage,2,1460.49,1
+102,HP PlayStation 5 825GB,PlayStation 5 with 825GB storage,5,995.3,1
+103,HP PlayStation 5 825GB,PlayStation 5 with 825GB storage,5,1392.47,1
+104,Dell PlayStation 5 825GB,PlayStation 5 with 825GB storage,4,770.36,1
+105,Samsung PlayStation 5 825GB,PlayStation 5 with 825GB storage,2,1616.64,1
+106,Samsung PlayStation 5 825GB,PlayStation 5 with 825GB storage,2,1947.24,1
+107,Apple PlayStation 5 825GB,PlayStation 5 with 825GB storage,1,1795.65,1
+108,HP PlayStation 5 825GB,PlayStation 5 with 825GB storage,5,2148.14,1
+109,Samsung PlayStation 5 825GB,PlayStation 5 with 825GB storage,2,2286.93,1
+110,Dell PlayStation 5 825GB,PlayStation 5 with 825GB storage,4,1201.99,1
+111,Nike T-Shirt Size M,"Cotton t-shirt, size M",7,32.49,2
+112,Puma T-Shirt Size S,"Cotton t-shirt, size S",9,53.45,2
+113,Puma T-Shirt Size M,"Cotton t-shirt, size M",9,19.58,2
+114,Nike T-Shirt Size M,"Cotton t-shirt, size M",7,38.65,2
+115,Adidas T-Shirt Size S,"Cotton t-shirt, size S",8,24.91,2
+116,Adidas T-Shirt Size L,"Cotton t-shirt, size L",8,31.21,2
+117,Adidas T-Shirt Size L,"Cotton t-shirt, size L",8,23.32,2
+118,Adidas T-Shirt Size S,"Cotton t-shirt, size S",8,48.37,2
+119,Nike T-Shirt Size L,"Cotton t-shirt, size L",7,17.54,2
+120,Puma T-Shirt Size S,"Cotton t-shirt, size S",9,16.46,2
+121,Nike T-Shirt Size L,"Cotton t-shirt, size L",7,56.42,2
+122,Nike T-Shirt Size S,"Cotton t-shirt, size S",7,31.69,2
+123,Nike T-Shirt Size L,"Cotton t-shirt, size L",7,58.08,2
+124,Nike T-Shirt Size L,"Cotton t-shirt, size L",7,26.69,2
+125,Nike T-Shirt Size M,"Cotton t-shirt, size M",7,49.63,2
+126,Adidas T-Shirt Size S,"Cotton t-shirt, size S",8,56.37,2
+127,Nike T-Shirt Size XL,"Cotton t-shirt, size XL",7,53.44,2
+128,Nike T-Shirt Size S,"Cotton t-shirt, size S",7,55.52,2
+129,Nike T-Shirt Size L,"Cotton t-shirt, size L",7,51.91,2
+130,Adidas T-Shirt Size XL,"Cotton t-shirt, size XL",8,39.21,2
+131,Puma T-Shirt Size L,"Cotton t-shirt, size L",9,51.27,2
+132,Adidas T-Shirt Size L,"Cotton t-shirt, size L",8,42.88,2
+133,Nike T-Shirt Size L,"Cotton t-shirt, size L",7,45.22,2
+134,Adidas T-Shirt Size S,"Cotton t-shirt, size S",8,36.29,2
+135,Adidas T-Shirt Size L,"Cotton t-shirt, size L",8,39.01,2
+136,Adidas T-Shirt Size M,"Cotton t-shirt, size M",8,16.99,2
+137,Puma T-Shirt Size S,"Cotton t-shirt, size S",9,17.91,2
+138,Puma T-Shirt Size S,"Cotton t-shirt, size S",9,25.43,2
+139,Nike T-Shirt Size XL,"Cotton t-shirt, size XL",7,50.19,2
+140,Puma T-Shirt Size S,"Cotton t-shirt, size S",9,32.73,2
+141,Adidas T-Shirt Size S,"Cotton t-shirt, size S",8,30.87,2
+142,Puma T-Shirt Size L,"Cotton t-shirt, size L",9,39.43,2
+143,Puma T-Shirt Size M,"Cotton t-shirt, size M",9,15.54,2
+144,Adidas T-Shirt Size S,"Cotton t-shirt, size S",8,48.47,2
+145,Adidas T-Shirt Size M,"Cotton t-shirt, size M",8,55.9,2
+146,Puma T-Shirt Size XL,"Cotton t-shirt, size XL",9,27.23,2
+147,Puma T-Shirt Size M,"Cotton t-shirt, size M",9,17.37,2
+148,Adidas T-Shirt Size M,"Cotton t-shirt, size M",8,52.87,2
+149,Nike T-Shirt Size L,"Cotton t-shirt, size L",7,25.53,2
+150,Puma T-Shirt Size L,"Cotton t-shirt, size L",9,27.2,2
+151,Nike Running Shoes Size 42,"Running shoes, EU size 42",7,163.87,4
+152,Nike Running Shoes Size 43,"Running shoes, EU size 43",7,161.28,4
+153,Nike Running Shoes Size 41,"Running shoes, EU size 41",7,152.58,4
+154,Nike Running Shoes Size 43,"Running shoes, EU size 43",7,133.17,4
+155,Puma Running Shoes Size 41,"Running shoes, EU size 41",9,129.68,4
+156,Nike Running Shoes Size 42,"Running shoes, EU size 42",7,115.0,4
+157,Puma Running Shoes Size 40,"Running shoes, EU size 40",9,99.71,4
+158,Nike Running Shoes Size 40,"Running shoes, EU size 40",7,131.66,4
+159,Adidas Running Shoes Size 44,"Running shoes, EU size 44",8,153.74,4
+160,Nike Running Shoes Size 43,"Running shoes, EU size 43",7,89.48,4
+161,Puma Running Shoes Size 42,"Running shoes, EU size 42",9,80.4,4
+162,Nike Running Shoes Size 41,"Running shoes, EU size 41",7,144.71,4
+163,Puma Running Shoes Size 40,"Running shoes, EU size 40",9,119.78,4
+164,Nike Running Shoes Size 40,"Running shoes, EU size 40",7,109.96,4
+165,Puma Running Shoes Size 44,"Running shoes, EU size 44",9,86.08,4
+166,Puma Running Shoes Size 44,"Running shoes, EU size 44",9,110.53,4
+167,Nike Running Shoes Size 43,"Running shoes, EU size 43",7,172.52,4
+168,Nike Running Shoes Size 43,"Running shoes, EU size 43",7,125.49,4
+169,Nike Running Shoes Size 44,"Running shoes, EU size 44",7,161.3,4
+170,Nike Running Shoes Size 40,"Running shoes, EU size 40",7,178.32,4
+171,Adidas Running Shoes Size 41,"Running shoes, EU size 41",8,142.17,4
+172,Adidas Running Shoes Size 43,"Running shoes, EU size 43",8,136.81,4
+173,Adidas Running Shoes Size 41,"Running shoes, EU size 41",8,150.91,4
+174,Puma Running Shoes Size 43,"Running shoes, EU size 43",9,153.78,4
+175,Puma Running Shoes Size 41,"Running shoes, EU size 41",9,156.58,4
+176,Adidas Running Shoes Size 42,"Running shoes, EU size 42",8,89.64,4
+177,Nike Running Shoes Size 44,"Running shoes, EU size 44",7,120.94,4
+178,Nike Running Shoes Size 42,"Running shoes, EU size 42",7,170.42,4
+179,Puma Running Shoes Size 43,"Running shoes, EU size 43",9,153.62,4
+180,Nike Running Shoes Size 44,"Running shoes, EU size 44",7,97.16,4
+181,Bosch Coffee Maker,Coffee Maker for home use,11,460.95,3
+182,IKEA Air Fryer,Air Fryer for home use,10,568.52,3
+183,Bosch Desk Lamp,Desk Lamp for home use,11,191.41,3
+184,Bosch Office Chair,Office Chair for home use,11,200.28,3
+185,IKEA Coffee Maker,Coffee Maker for home use,10,74.2,3
+186,Bosch Desk Lamp,Desk Lamp for home use,11,544.72,3
+187,Bosch Coffee Maker,Coffee Maker for home use,11,91.82,3
+188,IKEA Office Chair,Office Chair for home use,10,504.15,3
+189,IKEA Desk Lamp,Desk Lamp for home use,10,320.89,3
+190,IKEA Desk Lamp,Desk Lamp for home use,10,398.62,3
+191,Bosch Coffee Maker,Coffee Maker for home use,11,199.23,3
+192,IKEA Office Chair,Office Chair for home use,10,116.36,3
+193,IKEA Coffee Maker,Coffee Maker for home use,10,87.06,3
+194,IKEA Office Chair,Office Chair for home use,10,153.99,3
+195,IKEA Air Fryer,Air Fryer for home use,10,121.71,3
+196,IKEA Air Fryer,Air Fryer for home use,10,325.99,3
+197,IKEA Coffee Maker,Coffee Maker for home use,10,475.16,3
+198,Bosch Office Chair,Office Chair for home use,11,442.38,3
+199,IKEA Office Chair,Office Chair for home use,10,484.2,3
+200,IKEA Office Chair,Office Chair for home use,10,300.87,3
