@@ -4,14 +4,33 @@ Content-Type: application/json
 
 {
   "orderId": "1238",
-  "customerId": "448",
-  "totalAmount": 50.00,
+  "customerId": "1",
+  "totalAmount": 1482.83,
   "createdAt": "{{$isoTimestamp}}",
   "products": [
     {
-      "productId": "PROD-452",
+      "productId": "8",
       "quantity": 1,
-      "price": 50.00
+      "price": 1482.83
+    }
+  ]
+}
+###
+
+### order-placed event request
+POST {{baseUrl}}/order-placed
+Content-Type: application/json
+
+{
+  "orderId": "34",
+  "customerId": "2",
+  "totalAmount": 1443.16,
+  "createdAt": "{{$isoTimestamp}}",
+  "products": [
+    {
+      "productId": "67",
+      "quantity": 2,
+      "price": 721.58
     }
   ]
 }
