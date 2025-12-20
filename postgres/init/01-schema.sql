@@ -40,3 +40,7 @@ COPY brand(id, name)
 COPY product(id, name, description, brand_id, price, category_id)
     FROM '/data/products.csv'
     DELIMITER ',' CSV HEADER;
+
+COPY users(id,first_name,last_name,email)
+    FROM '/data/users.csv'
+DELIMITER ',' CSV HEADER;
