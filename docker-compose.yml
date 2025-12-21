@@ -10,6 +10,14 @@ services:
       POSTGRES_DB: rta_ecommerce
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+      - "-c"
+      - "max_wal_senders=10"
+      - "-c"
+      - "max_replication_slots=10"
     volumes:
       - postgres_data:/var/lib/postgresql
       - ./postgres/data:/data
@@ -50,9 +58,40 @@ services:
       - kafka_data:/var/lib/kafka/data
     networks:
       - internal
+  debezium:
+    image: debezium/connect:2.6
+    container_name: rta-kafka-connect
+    hostname: debezium
+    ports:
+      - "8083:8083"
+    environment:
+      BOOTSTRAP_SERVERS: kafka:9092
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: debezium_connect_configs
+      OFFSET_STORAGE_TOPIC: debezium_connect_offsets
+      STATUS_STORAGE_TOPIC: debezium_connect_statuses
+      KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+      VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+    healthcheck: { test: curl -f localhost:8083, interval: 1s, start_period: 120s }
+    depends_on:
+      - kafka
+      - db
+    networks:
+      - internal
 
-
-
+  debezium_deploy:
+    image: debezium/connect:2.6
+    depends_on:
+      debezium: { condition: service_healthy }
+    environment:
+      KAFKA_ADDR: kafka:9092
+    volumes:
+      - ./debezium/register_postgres.sh:/register_postgres.sh
+    entrypoint: ["bash", "/register_postgres.sh"]
+    networks:
+      - internal
   pinot:
     image: apachepinot/pinot:latest
     container_name: rta-pinot
