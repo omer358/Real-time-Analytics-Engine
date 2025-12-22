@@ -8,8 +8,8 @@ services:
       - "5000:5432"
     environment:
       POSTGRES_DB: ${RTA_DB_NAME}
-      POSTGRES_USER: ${SPRING_DATASOURCE_USERNAME}
-      POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      POSTGRES_USER: ${RTA_DB_USERNAME}
+      POSTGRES_PASSWORD: ${RTA_DB_PASSWORD}
     command:
       - "postgres"
       - "-c"
@@ -90,8 +90,8 @@ services:
       RTA_DB_HOST: ${RTA_DB_HOST}
       RTA_DB_PORT: ${RTA_DB_PORT}
       RTA_DB_NAME: ${RTA_DB_NAME}
-      RTA_DB_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-      RTA_DB_USER: ${SPRING_DATASOURCE_USERNAME}
+      RTA_DB_PASSWORD: ${RTA_DB_PASSWORD}
+      RTA_DB_USER: ${RTA_DB_USERNAME}
     volumes:
       - ./debezium/register_postgres.sh:/register_postgres.sh
     entrypoint: ["bash", "/register_postgres.sh"]
