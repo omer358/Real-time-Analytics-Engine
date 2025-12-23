@@ -3,12 +3,14 @@ package com.example.processingservice.topology;
 import com.example.commonlib.events.FlatOrderProduct;
 import com.example.commonlib.events.OrderPlacedEvent;
 import com.example.commonlib.models.Product;
+import com.example.processingservice.mapper.FlatOrderProductMapper;
 import com.example.processingservice.validation.OrderPlacedEventValidator;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.kafka.support.serializer.JsonSerde;
 
 import java.time.Instant;
@@ -26,13 +28,14 @@ class OrderPlacedTopologyTest {
     private TopologyTestDriver testDriver;
     private TestInputTopic<String, OrderPlacedEvent> inputTopic;
     private TestOutputTopic<String, FlatOrderProduct> outputTopic;
-
+    @Mock
+    private FlatOrderProductMapper mapper;
     @BeforeEach
     void setup() {
         // Build topology
         StreamsBuilder builder = new StreamsBuilder();
         OrderPlacedEventValidator validator = new OrderPlacedEventValidator();
-        new OrderPlacedTopology(validator).orderPlacedStream(builder);
+        new OrderPlacedTopology(validator,mapper).orderPlacedStream(builder);
 
         Topology topology = builder.build();
 
